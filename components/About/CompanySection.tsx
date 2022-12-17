@@ -16,7 +16,7 @@ const CompanySection = ({ companies }: Props) => {
     return (
         <CompaniesContainer>
             {companies.map((company) => {
-                return <CompanyCard company={company} />
+                return <CompanyCard key={company.name} company={company} />
             })}
         </CompaniesContainer>
     )

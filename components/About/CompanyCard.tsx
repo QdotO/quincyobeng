@@ -37,7 +37,7 @@ const CompanyCard = ({ company }: Props) => {
                 {company.tenure.projects.map(
                     ({ title, technology, supportingTechnologies }) => {
                         return (
-                            <details>
+                            <details key={title}>
                                 <summary>{title}</summary>
                                 <div>
                                     <p>Primary Technology</p>
@@ -49,7 +49,7 @@ const CompanyCard = ({ company }: Props) => {
                                         <ul>
                                             {supportingTechnologies.map(
                                                 (tech) => (
-                                                    <li>{tech}</li>
+                                                    <li key={tech}>{tech}</li>
                                                 )
                                             )}
                                         </ul>

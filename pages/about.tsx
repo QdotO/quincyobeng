@@ -15,7 +15,7 @@ const about = (props: Props) => {
     return (
         <Container>
             <h2>About Me</h2>
-            <div>I'm Quincy Obeng</div>
+            <div>{`I'm Quincy Obeng`}</div>
             <p>
                 I was born in {textContent.birthplace} on {textContent.birthday}
             </p>
