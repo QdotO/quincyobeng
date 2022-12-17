@@ -8,8 +8,12 @@ const HeaderContainer = styled.div`
     width: 100%;
     height: var(--header-height);
     margin: 0 auto;
-    margin-bottom: 2rem;
-    max-width: var(--max-width);
+    border-bottom: 1px solid var(--grey-color);
+
+    @media screen AND (min-width: 500px) {
+        margin-bottom: 2rem;
+        max-width: var(--max-width);
+    }
 `
 
 const HeaderLinkContainer = styled.div`
