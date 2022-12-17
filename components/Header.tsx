@@ -7,7 +7,9 @@ const HeaderContainer = styled.div`
     align-items: center;
     width: 100%;
     height: var(--header-height);
+    margin: 0 auto;
     margin-bottom: 2rem;
+    max-width: var(--max-width);
 `
 
 const HeaderLinkContainer = styled.div`
@@ -37,14 +39,14 @@ type Props = {}
 const Header = (props: Props) => {
     return (
         <HeaderContainer>
-            <HeaderText href='/'>Quincy The Engineer</HeaderText>
-            <HeaderLinkContainer>
+            <HeaderText href='/'>QuincyObeng.com</HeaderText>
+            {/* <HeaderLinkContainer>
                 <HeaderLink href='/about'>About</HeaderLink>
                 <Divider />
                 <HeaderLink href='/posts'>Posts</HeaderLink>
                 <Divider />
                 <HeaderLink href='/contact'>Contact Quincy</HeaderLink>
-            </HeaderLinkContainer>
+            </HeaderLinkContainer> */}
         </HeaderContainer>
     )
 }

@@ -7,8 +7,9 @@ const BannerContainer = styled.div`
     width: 100%;
     height: 500px;
     display: flex;
-    justify-content: space-between;
-    padding-right: 10rem;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: var(--max-width);
 `
 const DividerContainer = styled.div`
     width: 25%;
@@ -36,7 +37,7 @@ const Description = styled.div`
     }
 `
 const Descriptors = styled.span`
-    color: var(--secondary-color);
+    color: var(--primary-color);
 `
 const ResumeDownload = styled.button`
     color: var(--dark-color);
@@ -48,7 +49,7 @@ const ResumeDownload = styled.button`
     font-family: Secular One;
 
     :hover {
-        color: var(--tertiary-color);
+        color: var(--light-color);
         text-decoration: double;
     }
 
@@ -73,16 +74,15 @@ const Banner = (props: Props) => {
                     <Divider />
                 </DividerContainer>
                 <Message>
-                    Hi, I'm Quincy <br />
-                    The Engineer
+                    {`Hi, I'm Quincy Obeng`}
                     <Description>
-                        I am a Senior Software Engineer with {years} years of
+                        {`I am a Senior Software Engineer with ${years} years of
                         experience. I'm passionate about user experience and
-                        building solutions that are{' '}
+                        building solutions that are `}
                         <Descriptors>simple</Descriptors>
                         {', '} <Descriptors>easy to use</Descriptors>
                         {', '} <Descriptors>helpful</Descriptors>
-                        {'. '} <br /> Let's build something!
+                        {'. '} <br /> {`Let's build something!`}
                     </Description>
                     <ResumeDownload type='button' onClick={handleResumeClick}>
                         Download My Resume
@@ -92,7 +92,7 @@ const Banner = (props: Props) => {
             <Image
                 className='banner-img'
                 src={HeroImg}
-                alt='Quincy The Engineer'
+                alt='Quincy Obeng'
                 priority
             />
         </BannerContainer>

@@ -8,11 +8,8 @@ export default function Home() {
     return (
         <div className={styles.container}>
             <Head>
-                <title>Quincy The Engineer</title>
-                <meta
-                    name='description'
-                    content='Quincy The Engineer Personal Site'
-                />
+                <title>QuincyObeng.com</title>
+                <meta name='description' content='Quincy Obeng Personal Site' />
             </Head>
 
             <main className={styles.main}>

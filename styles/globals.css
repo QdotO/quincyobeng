@@ -1,7 +1,7 @@
 :root {
-    --primary-color: #e28413;
-    --secondary-color: #a22c29;
-    --tertiary-color: #256eff;
+    --primary-color: #256eff;
+    --secondary-color: #8291ae;
+    --tertiary-color: #a22c29;
     --dark-color: #353a47;
     --light-color: #d6d5c9;
     --header-height: 75px;
@@ -9,6 +9,7 @@
     --circular: 50%;
     --box-shadow: 1px 2px 3px 0px var(--light-color);
     --basic-padding: 2rem;
+    --max-width: 1440px;
 }
 
 html,
