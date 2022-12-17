@@ -1,5 +1,3 @@
-
-
 .main {
     min-height: 100vh;
 }
@@ -111,9 +109,6 @@
     .card,
     .footer {
         border-color: #222;
-    }
-    .container {
-        background: var(--dark-color);
     }
     .logo img {
         filter: invert(1);

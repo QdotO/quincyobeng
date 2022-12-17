@@ -7,13 +7,18 @@ const MessageContainer = styled.div`
     font-size: 1.5rem;
     text-align: flex-start;
     width: 85%;
+`
+
+const WelcomeMessage = styled.div`
+    overflow: hidden;
+    white-space: nowrap;
 
     @media screen AND (min-width: 500px) {
         font-size: 4vw;
     }
 
     @media screen AND (min-width: 768px) {
-        font-size: 5vw;
+        font-size: 4vw;
     }
 `
 
@@ -63,7 +68,7 @@ const Message = (props: Props) => {
     }
     return (
         <MessageContainer>
-            {`Hi, I'm Quincy Obeng`}
+            <WelcomeMessage>{`Hi, I'm Quincy Obeng`}</WelcomeMessage>
             <Description>
                 {`I am a Senior Software Engineer with ${years} years of
         experience. I'm passionate about user experience and
