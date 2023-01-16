@@ -12,7 +12,6 @@ const HeaderContainer = styled.div`
 
     @media screen AND (min-width: 500px) {
         margin-bottom: 2rem;
-        max-width: var(--max-width);
     }
 `
 

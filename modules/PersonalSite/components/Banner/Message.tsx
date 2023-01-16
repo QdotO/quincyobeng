@@ -20,6 +20,10 @@ const WelcomeMessage = styled.div`
     @media screen AND (min-width: 768px) {
         font-size: 4vw;
     }
+
+    @media screen AND (min-width: 1024px) {
+        font-size: 3vw;
+    }
 `
 
 const Description = styled.div`

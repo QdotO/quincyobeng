@@ -13,7 +13,6 @@ const BannerContainer = styled.div`
 
     @media screen AND (min-width: 500px) {
         flex-direction: row;
-        max-width: var(--max-width);
         height: 500px;
     }
 `
