@@ -1,0 +1,31 @@
+.container {
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.contactCard {
+  box-shadow: var(--box-shadow);
+  border-radius: var(--rounded-corners);
+  padding: var(--basic-padding);
+  min-height: 400px;
+  min-width: 290px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media screen AND (min-width: 500px) {
+  .container {
+    align-items: flex-start;
+  }
+  .contactCard {
+    flex-direction: row;
+    gap: 2rem;
+    min-height: unset;
+    min-width: unset;
+    width: fit-content;
+  }
+}

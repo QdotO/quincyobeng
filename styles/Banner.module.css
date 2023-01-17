@@ -1,0 +1,22 @@
+.bannerContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  flex-direction: column-reverse;
+}
+@media screen AND (min-width: 500px) {
+  .bannerContainer {
+    flex-direction: row;
+    height: 500px;
+  }
+}
+
+.dividerContainer {
+  width: 25%;
+}
+
+.divider {
+  border: 3px solid var(--primary-color);
+  align-self: flex-start;
+}

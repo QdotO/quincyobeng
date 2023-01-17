@@ -1,0 +1,20 @@
+.companyCard {
+  box-shadow: var(--box-shadow);
+  border-radius: var(--rounded-corners);
+  padding: var(--basic-padding);
+  min-height: 400px;
+  min-width: 290px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media screen AND (min-width: 500px) {
+  .companyCard {
+    flex-direction: row;
+    gap: 2rem;
+    min-height: unset;
+    min-width: unset;
+    width: 30%;
+  }
+}

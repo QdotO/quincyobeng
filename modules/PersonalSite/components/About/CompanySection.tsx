@@ -1,25 +1,20 @@
 import React from 'react'
-import styled from 'styled-components'
+import styles from '../../../../styles/CompanySection.module.css'
 import Company from '../../types/Company'
 import CompanyCard from './CompanyCard'
 
 type Props = {
-    companies: Company[]
+  companies: Company[]
 }
 
-const CompaniesContainer = styled.div`
-    display: flex;
-    gap: 1.5rem;
-`
-
 const CompanySection = ({ companies }: Props) => {
-    return (
-        <CompaniesContainer>
-            {companies.map((company) => {
-                return <CompanyCard key={company.name} company={company} />
-            })}
-        </CompaniesContainer>
-    )
+  return (
+    <div className={styles.companiesContainer}>
+      {companies.map((company) => {
+        return <CompanyCard key={company.name} company={company} />
+      })}
+    </div>
+  )
 }
 
 export default CompanySection

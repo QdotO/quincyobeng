@@ -14,7 +14,9 @@ export default function Home() {
         <Banner />
       </main>
 
-      <footer className={styles.footer}>Copyright 2022</footer>
+      <footer className={styles.footer}>
+        Copyright {new Date().getFullYear()}
+      </footer>
     </div>
   )
 }

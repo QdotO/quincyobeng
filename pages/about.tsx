@@ -1,19 +1,13 @@
 import React from 'react'
-import styled from 'styled-components'
+import styles from '../styles/About.module.css'
 import CompanySection from '../modules/PersonalSite/components/About/CompanySection'
-import textContent from '../textContent/aboutMeSections'
-
-const Container = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  margin: 0 0 5rem 0;
-`
+import textContent from '../modules/PersonalSite/textContent/aboutMeSections'
 
 type Props = {}
 
 const about = (props: Props) => {
   return (
-    <Container>
+    <div className={styles.container}>
       <h2>About Me</h2>
       <div>{`I'm Quincy Obeng`}</div>
       <p>
@@ -28,7 +22,7 @@ const about = (props: Props) => {
         career
       </p>
       <CompanySection companies={textContent.career.companies} />
-    </Container>
+    </div>
   )
 }
 

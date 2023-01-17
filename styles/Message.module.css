@@ -1,0 +1,64 @@
+.messageContainer {
+  font-size: 1.5rem;
+  text-align: flex-start;
+  width: 85%;
+}
+
+.welcomeMessage {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.description {
+  color: var(--dark-color);
+  font-size: 1rem;
+  margin: 1rem auto 1.5rem auto;
+
+  text-align: start;
+}
+
+.descriptors {
+  color: var(--primary-color);
+}
+.resumeDownload {
+  color: var(--dark-color);
+  background: var(--primary-color);
+  font-size: 1rem;
+  padding: 1rem;
+  border-radius: var(--rounded-corners);
+  border: none;
+  font-family: Secular One;
+}
+
+.resumeDownload:hover {
+  color: var(--light-color);
+  text-decoration: double;
+}
+
+@media (prefers-color-scheme: dark) {
+  .resumeDownload,
+  .description {
+    color: var(--light-color);
+  }
+}
+
+@media screen AND (min-width: 1024px) {
+  .description {
+    font-size: 2vw;
+  }
+  .welcomeMessage {
+    font-size: 3vw;
+  }
+}
+
+@media screen AND (min-width: 500px) {
+  .welcomeMessage {
+    font-size: 4vw;
+  }
+}
+
+@media screen AND (min-width: 768px) {
+  .welcomeMessage {
+    font-size: 4vw;
+  }
+}
