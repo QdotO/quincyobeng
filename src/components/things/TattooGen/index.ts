@@ -1,1 +1,1 @@
-export {default}  from './TattooGen'
+// export {default}  from './TattooGen'
