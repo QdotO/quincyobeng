@@ -8,38 +8,27 @@ const Bio = () => {
       </h3>
       <div className='text-muted text-lg leading-relaxed space-y-4'>
         <p>
-          I&apos;m a{' '}
+          I’m a{' '}
           <span className='text-electric font-semibold'>
             Senior Software Engineer
           </span>{' '}
-          with over a decade of experience building innovation products at the
-          intersection of technology, design and user experience. For the past
-          two years I&apos;ve been focused on{' '}
-          <span className='text-electric-secondary font-semibold'>
-            AI/ML and Generative AI
-          </span>
-          , creating intelligent applications that leverage the latest
-          advancements in machine learning to deliver personalized and impactful
-          user experiences. I&apos;ve become passionate about the potential of
-          AI to transform industries and improve lives. I&apos;ve taught
-          workshops and mentored developers on integrating AI into their
-          projects.
+          who blends product sense with pragmatic engineering to ship reliable,
+          human‑centered software.
         </p>
         <p>
-          I&apos;ve led teams building{' '}
+          For 10+ years, I’ve designed and delivered systems that scale—from
+          advanced automation to unified product experiences. Recently, my focus
+          has been on{' '}
           <span className='text-electric-secondary font-semibold'>
-            advanced automation systems
+            building with generative AI models and systems on top of AI/ML
           </span>
-          , unified multiple applications into seamless platforms, and revamped
-          tools for large-scale events. Oh, and I&apos;m also a{' '}
-          <span className='text-electric font-semibold'>
-            two-time patent holder
-          </span>{' '}
+          —turning powerful models into simple, observable, and production‑ready
+          features.
         </p>
         <p>
-          When I&apos;m not coding, you&apos;ll find me exploring the latest
-          tech trends, building with an LLM, mentoring junior developers, or
-          probably spending time with family.
+          I mentor teams, teach workshops, and hold two patents in product
+          innovation. When I’m not building, I’m exploring new tech, supporting
+          developers, or spending time with family.
         </p>
       </div>
     </div>
