@@ -9,50 +9,53 @@ import GroqPhotoSrc from '../../../../../public/assets/groq.png'
 
 const TechSection: React.FC = () => {
   return (
-    <div className='flex flex-col gap-4 p-8 border border-light rounded-md'>
-      <h2 className='text-light font-serif font-bold'>Tech Stack</h2>
-      <p className='text-light opacity-75'>{`I'm currently building with these`}</p>
-      <div className='flex flex-col gap-8'>
-        <div className='flex flex-col md:flex-row justify-between w-full'>
-          <TechSectionItem
-            imageSrc={CodePhotoSrc}
-            altText='Code'
-            title='Next.js'
-            description='Web development'
-          />
-          <TechSectionItem
-            imageSrc={TypescriptPhotoSrc}
-            altText='Typescript'
-            title='Typescript'
-            description='Web development'
-          />
-          <TechSectionItem
-            imageSrc={ReactPhotoSrc}
-            altText='React.js'
-            title='React.js'
-            description='Web development'
-          />
-        </div>
-        <div className='flex flex-col md:flex-row justify-between w-full'>
-          <TechSectionItem
-            imageSrc={TailwindPhotoSrc}
-            altText='Tailwind'
-            title='Tailwind'
-            description='Web development'
-          />
-          <TechSectionItem
-            imageSrc={GithubPhotoSrc}
-            altText='Github Copilot'
-            title='Github Copilot'
-            description='AI development tool'
-          />
-          <TechSectionItem
-            imageSrc={GroqPhotoSrc}
-            altText='Groq cloud'
-            title='Groq cloud'
-            description='Web development'
-          />
-        </div>
+    <div className=''>
+      <div className='text-center lg:text-left mb-8'>
+        <h2 className='text-4xl lg:text-3xl md:text-5xl font-display font-bold text-light mb-4'>
+          Tech <span className='text-electric'>Stack</span>
+        </h2>
+        <p className='text-muted text-xl lg:text-lg'>
+          Tools and technologies I&apos;m building with
+        </p>
+      </div>
+
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-1 gap-4'>
+        <TechSectionItem
+          imageSrc={CodePhotoSrc}
+          altText='Code'
+          title='Next.js'
+          description='Full-stack React framework'
+        />
+        <TechSectionItem
+          imageSrc={TypescriptPhotoSrc}
+          altText='Typescript'
+          title='TypeScript'
+          description='Type-safe development'
+        />
+        <TechSectionItem
+          imageSrc={ReactPhotoSrc}
+          altText='React.js'
+          title='React.js'
+          description='UI component library'
+        />
+        <TechSectionItem
+          imageSrc={TailwindPhotoSrc}
+          altText='Tailwind'
+          title='Tailwind CSS'
+          description='Utility-first CSS framework'
+        />
+        <TechSectionItem
+          imageSrc={GithubPhotoSrc}
+          altText='Github Copilot'
+          title='GitHub Copilot'
+          description='AI-powered development'
+        />
+        <TechSectionItem
+          imageSrc={GroqPhotoSrc}
+          altText='Groq cloud'
+          title='Groq Cloud'
+          description='High-performance AI inference'
+        />
       </div>
     </div>
   )

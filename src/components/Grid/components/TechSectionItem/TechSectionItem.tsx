@@ -15,15 +15,24 @@ const TechSectionItem: React.FC<TechSectionItemProps> = ({
   description
 }) => {
   return (
-    <div className='flex p-2 h-fit w-full md:w-1/3'>
-      <div className='w-1/3'>
-        <div className='border border-light rounded-md shadow-md w-12 h-12 p-2 border-dashed'>
-          <Image src={imageSrc} alt={altText} />
+    <div className='group bg-surface border border-border rounded-2xl p-6 hover:border-electric/50 transition-all duration-300 hover:scale-105'>
+      <div className='flex items-start gap-4'>
+        <div className='w-16 h-16 bg-gradient-to-r from-electric/20 to-electric-secondary/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:from-electric/40 group-hover:to-electric-secondary/40 transition-all duration-300'>
+          <Image
+            src={imageSrc}
+            alt={altText}
+            width={32}
+            height={32}
+            className='object-contain'
+          />
         </div>
-      </div>
-      <div className='w-2/3 flex flex-col'>
-        <h3 className='text-light whitespace-nowrap'>{title}</h3>
-        <p className='text-light whitespace-nowrap opacity-75'>{description}</p>
+
+        <div className='flex-1 min-w-0'>
+          <h3 className='text-light font-display font-semibold text-lg mb-1 group-hover:text-electric transition-colors duration-300'>
+            {title}
+          </h3>
+          <p className='text-muted text-sm leading-relaxed'>{description}</p>
+        </div>
       </div>
     </div>
   )

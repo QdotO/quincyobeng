@@ -17,15 +17,38 @@ const LightBio: React.FC<LightBioProps> = ({
   pronouns
 }) => {
   return (
-    <div className='flex flex-col gap-8 rounded-md border border-light p-8'>
-      <div className='h-16 w-16'>
-        <Image src={imageSrc} alt={altText} />
+    <div className='bg-surface border border-border rounded-2xl p-8 hover:border-electric/50 transition-all duration-300'>
+      <div className='flex items-start gap-6'>
+        <div className='w-20 h-20 bg-gradient-to-r from-electric to-electric-secondary rounded-2xl p-4 flex-shrink-0'>
+          <Image
+            src={imageSrc}
+            alt={altText}
+            className='w-full h-full object-contain brightness-0 invert'
+          />
+        </div>
+
+        <div className='flex-1'>
+          <h2 className='text-light font-display font-bold text-3xl mb-4'>
+            {name}
+          </h2>
+          <div className='space-y-2'>
+            <div className='flex items-center gap-2'>
+              <span className='text-electric'>🎂</span>
+              <span className='text-muted text-lg'>{age} years old</span>
+            </div>
+            <div className='flex items-center gap-2'>
+              <span className='text-electric'>👤</span>
+              <span className='text-muted text-lg'>{pronouns}</span>
+            </div>
+            <div className='flex items-center gap-2'>
+              <span className='text-electric'>📍</span>
+              <span className='text-muted text-lg'>
+                Available for opportunities
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
-      <h2 className='text-light font-serif font-semibold text-xl'>{name}</h2>
-      <ul className='text-light opacity-75'>
-        <li className='list-item'>{age} years old</li>
-        <li className='list-item'>{pronouns}</li>
-      </ul>
     </div>
   )
 }

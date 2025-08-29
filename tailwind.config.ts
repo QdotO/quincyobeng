@@ -8,8 +8,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        serif: ['Helvetica Neue', 'sans-serif'],
+        sans: ['Inter Variable', 'Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        display: ['Cal Sans', 'Inter Variable', 'sans-serif'],
       },
       colors: {
         'accent-1': '#FAFAFA',
@@ -17,9 +18,16 @@ const config: Config = {
         'accent-7': '#333',
         success: '#0070f3',
         cyan: '#79FFE1',
-        dark: '#333232',
-        light: '#EFECEC',
-        accent: '#2943A4'
+        // Modern 2025 color palette
+        'dark': '#0a0a0a',
+        'dark-secondary': '#1a1a1a',
+        'light': '#f8f8f2',
+        'electric': '#00d4ff',
+        'electric-secondary': '#ff6b35',
+        'accent': '#7c3aed',
+        'muted': '#6b7280',
+        'surface': '#111827',
+        'border': '#374151'
       },
       spacing: {
         28: '7rem',
