@@ -45,6 +45,12 @@ const TechSection: React.FC = () => {
           description='Utility-first CSS framework'
         />
         <TechSectionItem
+          imageSrc={'/assets/cypress.svg'}
+          altText='Cypress'
+          title='Cypress'
+          description='E2E and component testing'
+        />
+        <TechSectionItem
           imageSrc={GithubPhotoSrc}
           altText='Github Copilot'
           title='GitHub Copilot'
@@ -55,6 +61,12 @@ const TechSection: React.FC = () => {
           altText='Groq cloud'
           title='Groq Cloud'
           description='High-performance AI inference'
+        />
+        <TechSectionItem
+          imageSrc={'/assets/mcp.svg'}
+          altText='Model Context Protocol'
+          title='MCP'
+          description='Extensible tool protocol for AI apps'
         />
       </div>
     </div>

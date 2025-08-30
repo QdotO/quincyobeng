@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="MCP">
+  <defs>
+    <linearGradient id="g2" x1="1" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="112" height="112" rx="20" fill="url(#g2)"/>
+  <g fill="#0b1220">
+    <circle cx="64" cy="64" r="40" fill="rgba(255,255,255,0.9)"/>
+    <text x="64" y="72" font-size="32" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-weight="800" fill="#0b1220">MCP</text>
+  </g>
+</svg>

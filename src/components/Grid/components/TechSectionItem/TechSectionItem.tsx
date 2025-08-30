@@ -2,7 +2,7 @@ import React from 'react'
 import Image, { StaticImageData } from 'next/image'
 
 interface TechSectionItemProps {
-  imageSrc: StaticImageData
+  imageSrc: StaticImageData | string
   altText: string
   title: string
   description: string
