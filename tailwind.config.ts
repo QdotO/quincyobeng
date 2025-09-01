@@ -11,6 +11,7 @@ const config: Config = {
         sans: ['Inter Variable', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
         display: ['Cal Sans', 'Inter Variable', 'sans-serif'],
+        serifDisplay: ['Playfair Display', 'Georgia', 'serif'],
       },
       colors: {
         'accent-1': '#FAFAFA',
@@ -18,16 +19,16 @@ const config: Config = {
         'accent-7': '#333',
         success: '#0070f3',
         cyan: '#79FFE1',
-        // Modern 2025 color palette
-        'dark': '#0a0a0a',
-        'dark-secondary': '#1a1a1a',
-        'light': '#f8f8f2',
-        'electric': '#00d4ff',
-        'electric-secondary': '#ff6b35',
-        'accent': '#7c3aed',
+        // Dynamic theme tokens via CSS variables (updated by ThemeRuntime)
+        'dark': 'var(--color-dark)',
+        'dark-secondary': 'var(--color-dark-secondary)',
+        'light': 'var(--color-light)',
+        'electric': 'var(--accent-color)',
+        'electric-secondary': 'var(--accent-secondary-color)',
+        'accent': 'var(--accent-color)',
         'muted': '#6b7280',
-        'surface': '#111827',
-        'border': '#374151'
+        'surface': 'var(--color-surface)',
+        'border': 'var(--color-border)'
       },
       spacing: {
         28: '7rem',

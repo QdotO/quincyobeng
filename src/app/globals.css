@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cal+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,6 +11,18 @@
   --foreground-rgb: 248, 248, 242;
   --background-start-rgb: 10, 10, 10;
   --background-end-rgb: 0, 0, 0;
+  /* Accent defaults (used by gradients, links, badges) */
+  --accent-color: #00d4ff;
+  --accent-secondary-color: #ff6b35;
+  /* Color token defaults used by Tailwind theme */
+  --color-dark: #0a0a0a;
+  --color-dark-secondary: #1a1a1a;
+  --color-light: #f8f8f2;
+  --color-surface: #111827;
+  --color-border: #374151;
+  /* Active theme font variables */
+  --font-display-active: var(--font-inter);
+  --font-sans-active: var(--font-inter);
 }
 
 * {
@@ -43,17 +56,17 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #00d4ff;
+  background: var(--accent-color, #00d4ff);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff6b35;
+  background: var(--accent-secondary-color, #ff6b35);
 }
 
 /* Selection color */
 ::selection {
-  background: #00d4ff;
+  background: var(--accent-color, #00d4ff);
   color: #0a0a0a;
 }
 
@@ -86,5 +99,25 @@ body {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Font utilities driven by CSS vars */
+  .font-theme-display { font-family: var(--font-display-active), ui-sans-serif, system-ui; }
+  .font-theme-sans { font-family: var(--font-sans-active), ui-sans-serif, system-ui; }
+
+  /* Subtle texture overlay: SVG noise + striped mask (applied via ::after) */
+  .with-texture { position: relative; }
+  .with-texture::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.12;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>");
+    background-size: cover;
+    /* Striped reveal via mask-image */
+    -webkit-mask-image: repeating-linear-gradient(0deg, #000 0 2px, transparent 2px 14px), repeating-linear-gradient(90deg, #000 0 1px, transparent 1px 16px);
+    mask-image: repeating-linear-gradient(0deg, #000 0 2px, transparent 2px 14px), repeating-linear-gradient(90deg, #000 0 1px, transparent 1px 16px);
   }
 }

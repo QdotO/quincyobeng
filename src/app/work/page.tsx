@@ -70,6 +70,55 @@ export default function Work() {
 
           {/* Work Grid */}
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+            {/* Theme Explorer - New */}
+            <div className='group relative bg-gradient-to-br from-dark-secondary to-surface rounded-2xl p-8 border border-electric/20 hover:border-electric/40 transition-all duration-300 hover:scale-105'>
+              <div className='absolute inset-0 bg-gradient-to-br from-electric/5 to-electric-secondary/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+
+              <div className='relative z-10'>
+                <div className='w-12 h-12 bg-gradient-to-r from-electric to-electric-secondary rounded-xl flex items-center justify-center mb-6'>
+                  <span className='text-2xl'>🧭</span>
+                </div>
+
+                <h3 className='text-xl font-semibold text-light mb-3'>
+                  Theme Explorer
+                </h3>
+
+                <p className='text-muted text-sm mb-6 leading-relaxed'>
+                  Explore four distinct vibes for the site (Sophisticated, Fun
+                  Artistic, Design Focused, Corporate), each with its own
+                  palette control.
+                </p>
+
+                <div className='flex flex-wrap gap-2 mb-6'>
+                  <span className='px-3 py-1 bg-electric/10 text-electric text-xs rounded-full border border-electric/20'>
+                    Themes
+                  </span>
+                  <span className='px-3 py-1 bg-electric-secondary/10 text-electric-secondary text-xs rounded-full border border-electric-secondary/20'>
+                    Exploration
+                  </span>
+                </div>
+
+                <Link
+                  href='/play/theme-explorer'
+                  className='inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-electric to-electric-secondary text-dark font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-electric/25'
+                >
+                  Open Explorer
+                  <svg
+                    className='w-4 h-4'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M9 5l7 7-7 7'
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </div>
             {/* Color Palette Generator - New */}
             <div className='group relative bg-gradient-to-br from-dark-secondary to-surface rounded-2xl p-8 border border-electric/20 hover:border-electric/40 transition-all duration-300 hover:scale-105'>
               <div className='absolute inset-0 bg-gradient-to-br from-electric/5 to-electric-secondary/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
