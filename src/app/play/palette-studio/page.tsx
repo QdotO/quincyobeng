@@ -17,6 +17,12 @@ type Scheme =
   | 'shades'
 type RGB = { r: number; g: number; b: number }
 type HSL = { h: number; s: number; l: number }
+type GradientKind =
+  | 'linear'
+  | 'radial'
+  | 'conic'
+  | 'repeating-linear'
+  | 'repeating-radial'
 
 // --- Color utils (copied minimally to keep file self-contained) ---
 const clamp = (n: number, min = 0, max = 1) => Math.min(max, Math.max(min, n))
@@ -241,24 +247,105 @@ function generateScheme(
 const DEFAULT_SEED = '#00D4FF'
 
 const HUE_NAMES = [
-  'Crimson',
+  'Ruby',
   'Coral',
   'Amber',
+  'Citrine',
   'Lime',
-  'Emerald',
+  'Jade',
   'Teal',
+  'Aqua',
   'Azure',
+  'Cerulean',
   'Indigo',
   'Violet',
+  'Fuchsia',
   'Magenta'
 ]
-function nameFromHexes(hexes: string[]): string {
+function nameFromHexes(hexes: string[], scheme?: Scheme): string {
   if (!hexes.length) return 'Untitled Palette'
   const hues = hexes.map((h) => hexToHsl(h).h)
-  const avg = hues.reduce((a, b) => a + b, 0) / hues.length
-  const idx = Math.round(((avg % 360) / 360) * (HUE_NAMES.length - 1))
-  const mood = averageLightness(hexes) > 0.5 ? 'Day' : 'Dusk'
-  return `${HUE_NAMES[idx]} ${mood}`
+  const sats = hexes.map((h) => hexToHsl(h).s)
+  const lights = hexes.map((h) => hexToHsl(h).l)
+  const avgH = hues.reduce((a, b) => a + b, 0) / hues.length
+  const avgS = sats.reduce((a, b) => a + b, 0) / sats.length
+  const avgL = lights.reduce((a, b) => a + b, 0) / lights.length
+
+  // Core tokens
+  const hueIdx = Math.round(((avgH % 360) / 360) * (HUE_NAMES.length - 1))
+  const hueName = HUE_NAMES[hueIdx]
+
+  const mood =
+    avgL < 0.2
+      ? 'Midnight'
+      : avgL < 0.35
+      ? 'Dusk'
+      : avgL < 0.65
+      ? 'Day'
+      : 'Dawn'
+  const intensity =
+    avgS > 0.65
+      ? 'Electric'
+      : avgS > 0.5
+      ? 'Vivid'
+      : avgS > 0.35
+      ? 'Bold'
+      : avgS > 0.2
+      ? 'Soft'
+      : 'Muted'
+  const temperature =
+    avgH < 70 || avgH >= 330
+      ? 'Warm'
+      : avgH >= 160 && avgH < 300
+      ? 'Cool'
+      : 'Neutral'
+
+  const schemeWord = (
+    {
+      mono: 'Monochrome',
+      analogous: 'Analog',
+      complementary: 'Complement',
+      triad: 'Triad',
+      split: 'Split',
+      tetrad: 'Tetrad',
+      shades: 'Shades'
+    } as const
+  )[scheme || 'analogous']
+
+  const suffixes = [
+    'Harmony',
+    'Blend',
+    'Pulse',
+    'Echo',
+    'Flux',
+    'Aura',
+    'Drift',
+    'Bloom',
+    'Glow',
+    'Weave',
+    'Storm',
+    'Tone'
+  ]
+
+  // Deterministic variety using seeded PRNG
+  const seedStr = hexes.join('|') + '|' + (scheme || 'analogous')
+  const rand = mulberry32(hashStringToInt(seedStr))
+  const pick = <T,>(arr: T[]) =>
+    arr[Math.max(0, Math.min(arr.length - 1, Math.floor(rand() * arr.length)))]
+
+  const suffix = pick(suffixes)
+
+  const patterns = [
+    () => `${intensity} ${hueName} ${suffix}`,
+    () => `${temperature} ${hueName} ${suffix}`,
+    () => `${mood} ${hueName} ${schemeWord}`,
+    () => `${hueName} ${schemeWord} ${suffix}`,
+    () => `${intensity} ${schemeWord} ${suffix}`,
+    () => `${mood} ${hueName} ${suffix}`
+  ]
+
+  const name = pick(patterns)().replace(/\s+/g, ' ').trim()
+  return name
 }
 function averageLightness(hexes: string[]) {
   return hexes.reduce((a, h) => a + hexToHsl(h).l, 0) / hexes.length
@@ -274,11 +361,14 @@ function StudioClient() {
   const [variant, setVariant] = useState<number>(
     parseInt(search.get('v') || '0', 10) || 0
   )
+  const [gradient, setGradient] = useState<GradientKind>(
+    ((search.get('g') as GradientKind) || 'linear') as GradientKind
+  )
   const [colors, setColors] = useState<string[]>(() =>
     generateScheme(seed, scheme, 5, undefined, undefined, variant)
   )
   const [name, setName] = useState<string>(
-    decodeURIComponent(search.get('name') || nameFromHexes(colors))
+    decodeURIComponent(search.get('name') || nameFromHexes(colors, scheme))
   )
   const [dark, setDark] = useState(true)
   const [showColors, setShowColors] = useState(false)
@@ -296,15 +386,16 @@ function StudioClient() {
     p.set('scheme', scheme)
     if (variant) p.set('v', String(variant))
     if (name) p.set('name', encodeURIComponent(name))
+    if (gradient && gradient !== 'linear') p.set('g', gradient)
     router.replace(`?${p.toString()}`)
-  }, [seed, scheme, variant, name, router])
+  }, [seed, scheme, variant, name, gradient, router])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setVariant(0)
     setColors((prev) => {
       const next = generateScheme(seed, scheme, prev.length, prev, undefined, 0)
-      if (!search.get('name')) setName(nameFromHexes(next))
+      if (!search.get('name')) setName(nameFromHexes(next, scheme))
       return next
     })
   }, [seed, scheme, search])
@@ -329,7 +420,7 @@ function StudioClient() {
           undefined,
           nv
         )
-        setName(nameFromHexes(next))
+        setName(nameFromHexes(next, scheme))
         return next
       })
       return nv
@@ -345,7 +436,7 @@ function StudioClient() {
     setVariant(0)
     setColors((prev) => {
       const next = generateScheme(rand, scheme, prev.length, prev, undefined, 0)
-      setName(nameFromHexes(next))
+      setName(nameFromHexes(next, scheme))
       return next
     })
   }
@@ -365,9 +456,25 @@ function StudioClient() {
   }
 
   // Full-screen poster gradient background
-  const posterGradient = `linear-gradient(135deg, ${colors[0]} 0%, ${
-    colors[1] ?? colors[0]
-  } 50%, ${colors[2] ?? colors[0]} 100%)`
+  const c0 = colors[0] ?? seed
+  const c1 = colors[1] ?? c0
+  const c2 = colors[2] ?? c1
+  const posterGradient = (() => {
+    switch (gradient) {
+      case 'linear':
+        return `linear-gradient(135deg, ${c0} 0%, ${c1} 50%, ${c2} 100%)`
+      case 'radial':
+        return `radial-gradient(900px 700px at 45% 35%, ${c0} 0%, ${c1} 55%, ${c2} 100%)`
+      case 'conic':
+        return `conic-gradient(from 0deg at 50% 50%, ${c0} 0deg, ${c1} 140deg, ${c2} 260deg, ${c0} 360deg)`
+      case 'repeating-linear':
+        return `repeating-linear-gradient(45deg, ${c0} 0, ${c0} 24px, ${c1} 24px, ${c1} 48px, ${c2} 48px, ${c2} 72px)`
+      case 'repeating-radial':
+        return `repeating-radial-gradient(circle at 50% 50%, ${c0} 0, ${c0} 14px, ${c1} 14px, ${c1} 28px, ${c2} 28px, ${c2} 42px)`
+      default:
+        return `linear-gradient(135deg, ${c0} 0%, ${c1} 50%, ${c2} 100%)`
+    }
+  })()
 
   const copyHex = async (hex: string) => {
     await navigator.clipboard.writeText(hex)
@@ -645,6 +752,22 @@ function StudioClient() {
           {dark ? <Icon.Moon /> : <Icon.Sun />}
           <span className='hidden md:inline'>{dark ? 'Dark' : 'Light'}</span>
         </button>
+        {/* Desktop-only gradient type selector */}
+        <label className='hidden md:flex items-center gap-2 h-10 rounded-full border border-white/20 backdrop-blur-md text-white px-2'>
+          <span className='text-xs opacity-80'>Gradient</span>
+          <select
+            value={gradient}
+            onChange={(e) => setGradient(e.target.value as GradientKind)}
+            className='bg-black/20 text-white text-sm rounded-full px-2 py-1 outline-none'
+            aria-label='Gradient type'
+          >
+            <option value='linear'>Linear</option>
+            <option value='radial'>Radial</option>
+            <option value='conic'>Conic</option>
+            <option value='repeating-linear'>Repeating Linear</option>
+            <option value='repeating-radial'>Repeating Radial</option>
+          </select>
+        </label>
         <button
           onClick={exportPoster}
           aria-label='Export poster'
