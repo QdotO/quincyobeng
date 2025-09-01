@@ -3,6 +3,15 @@ import Link from 'next/link'
 export default function Work() {
   return (
     <main className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface'>
+      {/* Back to Home */}
+      <div className='fixed top-3 left-3 md:top-6 md:left-6 z-50'>
+        <Link href='/' className='inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-black/40 text-white border border-white/20 backdrop-blur-md hover:bg-black/50 transition'>
+          <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='1.5' className='h-5 w-5' aria-hidden>
+            <path strokeLinecap='round' strokeLinejoin='round' d='M15 19l-7-7 7-7' />
+          </svg>
+          <span className='hidden sm:inline'>Back to Home</span>
+        </Link>
+      </div>
       {/* Hero Section */}
       <section className='relative min-h-screen flex flex-col justify-center items-center px-8 overflow-hidden'>
         {/* Background gradient overlay */}
@@ -47,6 +56,198 @@ export default function Work() {
 
           {/* Work Grid */}
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+            {/* Color Palette Generator - New */}
+            <div className='group relative bg-gradient-to-br from-dark-secondary to-surface rounded-2xl p-8 border border-electric/20 hover:border-electric/40 transition-all duration-300 hover:scale-105'>
+              <div className='absolute inset-0 bg-gradient-to-br from-electric/5 to-electric-secondary/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+
+              <div className='relative z-10'>
+                <div className='w-12 h-12 bg-gradient-to-r from-electric to-electric-secondary rounded-xl flex items-center justify-center mb-6'>
+                  <span className='text-2xl'>🎨</span>
+                </div>
+
+                <h3 className='text-xl font-semibold text-light mb-3'>
+                  Color Palette Generator
+                </h3>
+
+                <p className='text-muted text-sm mb-6 leading-relaxed'>
+                  Generate beautiful color schemes from a base color. Lock,
+                  copy, and export your palette.
+                </p>
+
+                <div className='flex flex-wrap gap-2 mb-6'>
+                  <span className='px-3 py-1 bg-electric/10 text-electric text-xs rounded-full border border-electric/20'>
+                    Design Tools
+                  </span>
+                  <span className='px-3 py-1 bg-electric-secondary/10 text-electric-secondary text-xs rounded-full border border-electric-secondary/20'>
+                    Colors
+                  </span>
+                </div>
+
+                <Link
+                  href='/play/palette'
+                  className='inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-electric to-electric-secondary text-dark font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-electric/25'
+                >
+                  Try It Out
+                  <svg
+                    className='w-4 h-4'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M9 5l7 7-7 7'
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+            {/* Palette Studio - New */}
+            <div className='group relative bg-gradient-to-br from-dark-secondary to-surface rounded-2xl p-8 border border-electric/20 hover:border-electric/40 transition-all duration-300 hover:scale-105'>
+              <div className='absolute inset-0 bg-gradient-to-br from-electric/5 to-electric-secondary/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+
+              <div className='relative z-10'>
+                <div className='w-12 h-12 bg-gradient-to-r from-electric to-electric-secondary rounded-xl flex items-center justify-center mb-6'>
+                  <span className='text-2xl'>🖼️</span>
+                </div>
+
+                <h3 className='text-xl font-semibold text-light mb-3'>
+                  Palette Studio (Poster)
+                </h3>
+
+                <p className='text-muted text-sm mb-6 leading-relaxed'>
+                  A poster-first, immersive way to explore palettes. Optimized
+                  for desktop and mobile with exportable posters.
+                </p>
+
+                <div className='flex flex-wrap gap-2 mb-6'>
+                  <span className='px-3 py-1 bg-electric/10 text-electric text-xs rounded-full border border-electric/20'>
+                    Design Tools
+                  </span>
+                  <span className='px-3 py-1 bg-electric-secondary/10 text-electric-secondary text-xs rounded-full border border-electric-secondary/20'>
+                    Poster
+                  </span>
+                </div>
+
+                <Link
+                  href='/play/palette-studio'
+                  className='inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-electric to-electric-secondary text-dark font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-electric/25'
+                >
+                  Try It Out
+                  <svg
+                    className='w-4 h-4'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M9 5l7 7-7 7'
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+            {/* Brand Moodboard - New */}
+            <div className='group relative bg-gradient-to-br from-dark-secondary to-surface rounded-2xl p-8 border border-electric/20 hover:border-electric/40 transition-all duration-300 hover:scale-105'>
+              <div className='absolute inset-0 bg-gradient-to-br from-electric/5 to-electric-secondary/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+
+              <div className='relative z-10'>
+                <div className='w-12 h-12 bg-gradient-to-r from-electric to-electric-secondary rounded-xl flex items-center justify-center mb-6'>
+                  <span className='text-2xl'>🧩</span>
+                </div>
+
+                <h3 className='text-xl font-semibold text-light mb-3'>
+                  Brand Moodboard
+                </h3>
+
+                <p className='text-muted text-sm mb-6 leading-relaxed'>
+                  Pick adjectives, palettes, and type pairings to generate a
+                  quick brand moodboard with exportable tokens.
+                </p>
+
+                <div className='flex flex-wrap gap-2 mb-6'>
+                  <span className='px-3 py-1 bg-electric/10 text-electric text-xs rounded-full border border-electric/20'>
+                    Visual Design
+                  </span>
+                  <span className='px-3 py-1 bg-electric-secondary/10 text-electric-secondary text-xs rounded-full border border-electric-secondary/20'>
+                    Branding
+                  </span>
+                </div>
+
+                <Link
+                  href='/play/moodboard'
+                  className='inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-electric to-electric-secondary text-dark font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-electric/25'
+                >
+                  Try It Out
+                  <svg
+                    className='w-4 h-4'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M9 5l7 7-7 7'
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+            {/* Hero Composer - New */}
+            <div className='group relative bg-gradient-to-br from-dark-secondary to-surface rounded-2xl p-8 border border-electric/20 hover:border-electric/40 transition-all duration-300 hover:scale-105'>
+              <div className='absolute inset-0 bg-gradient-to-br from-electric/5 to-electric-secondary/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+
+              <div className='relative z-10'>
+                <div className='w-12 h-12 bg-gradient-to-r from-electric to-electric-secondary rounded-xl flex items-center justify-center mb-6'>
+                  <span className='text-2xl'>🎨</span>
+                </div>
+
+                <h3 className='text-xl font-semibold text-light mb-3'>
+                  Landing Page Hero Composer
+                </h3>
+
+                <p className='text-muted text-sm mb-6 leading-relaxed'>
+                  Pick a vibe, palette, and CTA — watch a polished hero come to
+                  life instantly. Export a snippet and share your idea.
+                </p>
+
+                <div className='flex flex-wrap gap-2 mb-6'>
+                  <span className='px-3 py-1 bg-electric/10 text-electric text-xs rounded-full border border-electric/20'>
+                    Visual Builder
+                  </span>
+                  <span className='px-3 py-1 bg-electric-secondary/10 text-electric-secondary text-xs rounded-full border border-electric-secondary/20'>
+                    Landing Pages
+                  </span>
+                </div>
+
+                <Link
+                  href='/play/hero-composer'
+                  className='inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-electric to-electric-secondary text-dark font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-electric/25'
+                >
+                  Try It Out
+                  <svg
+                    className='w-4 h-4'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M9 5l7 7-7 7'
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </div>
             {/* Product Simulator - Featured */}
             <div className='group relative bg-gradient-to-br from-dark-secondary to-surface rounded-2xl p-8 border border-electric/20 hover:border-electric/40 transition-all duration-300 hover:scale-105'>
               <div className='absolute inset-0 bg-gradient-to-br from-electric/5 to-electric-secondary/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
