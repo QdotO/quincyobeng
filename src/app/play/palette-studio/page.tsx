@@ -284,6 +284,9 @@ function StudioClient() {
   const [showColors, setShowColors] = useState(false)
   const [toast, setToast] = useState<string | undefined>(undefined)
 
+  // Reveal state to animate swatches left-to-right on color changes
+  const [revealed, setRevealed] = useState(false)
+
   const posterRefFull = useRef<HTMLDivElement>(null)
   const posterRefCard = useRef<HTMLDivElement>(null)
 
@@ -305,6 +308,14 @@ function StudioClient() {
       return next
     })
   }, [seed, scheme, search])
+
+  // Re-trigger reveal animation when the colors array changes
+  useEffect(() => {
+    // Reset then enable on next tick to ensure transition applies
+    setRevealed(false)
+    const t = setTimeout(() => setRevealed(true), 30)
+    return () => clearTimeout(t)
+  }, [colors])
 
   const regenerate = () => {
     setVariant((v) => {
@@ -495,8 +506,15 @@ function StudioClient() {
                 {colors.map((c, i) => (
                   <div
                     key={i}
-                    className='h-12 w-20 md:h-16 md:w-28 rounded-xl shadow-lg ring-1 ring-black/10'
-                    style={{ backgroundColor: c }}
+                    className={`h-12 w-20 md:h-16 md:w-28 rounded-xl shadow-lg ring-1 ring-black/10 transition-all duration-700 ${
+                      revealed
+                        ? 'opacity-100 translate-y-0'
+                        : 'opacity-0 translate-y-1'
+                    }`}
+                    style={{
+                      backgroundColor: c,
+                      transitionDelay: `${i * 140}ms`
+                    }}
                   />
                 ))}
               </div>
@@ -555,8 +573,15 @@ function StudioClient() {
                   {colors.map((c, i) => (
                     <div
                       key={i}
-                      className='h-10 w-16 rounded-xl shadow-lg ring-1 ring-black/10'
-                      style={{ backgroundColor: c }}
+                      className={`h-10 w-16 rounded-xl shadow-lg ring-1 ring-black/10 transition-all duration-700 ${
+                        revealed
+                          ? 'opacity-100 translate-y-0'
+                          : 'opacity-0 translate-y-1'
+                      }`}
+                      style={{
+                        backgroundColor: c,
+                        transitionDelay: `${i * 140}ms`
+                      }}
                     />
                   ))}
                 </div>
@@ -699,7 +724,12 @@ function StudioClient() {
                 <button
                   key={i}
                   onClick={() => copyHex(c)}
-                  className='group w-full flex items-center gap-3 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 p-3 text-left'
+                  className={`group w-full flex items-center gap-3 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 p-3 text-left transition-all duration-700 ${
+                    revealed
+                      ? 'opacity-100 translate-y-0'
+                      : 'opacity-0 translate-y-1'
+                  }`}
+                  style={{ transitionDelay: `${i * 120}ms` }}
                 >
                   <span
                     className='h-6 w-6 rounded-md ring-1 ring-black/10'
