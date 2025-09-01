@@ -375,6 +375,13 @@ function StudioClient() {
     setTimeout(() => setToast(undefined), 1500)
   }
 
+  // Choose readable text color for hex labels on swatches
+  const contrastText = (hex: string) => {
+    const { r, g, b } = hexToRgb(hex)
+    const pl = (0.299 * r + 0.587 * g + 0.114 * b) / 255 // perceptive luminance
+    return pl > 0.6 ? '#0b0b0b' : '#F8F8F2'
+  }
+
   // Inline icons (no external deps)
   const Icon = {
     Sun: (p: any) => (
@@ -461,6 +468,10 @@ function StudioClient() {
   return (
     <main className='relative min-h-screen'>
       <BackButton href='/work' label='Back to Work' />
+      {/* SR-only live region for announcements */}
+      <div className='sr-only' role='status' aria-live='polite'>
+        {toast || ''}
+      </div>
       {/* Desktop: Full-screen poster */}
       <div className='hidden md:block absolute inset-0 z-0'>
         <div ref={posterRefFull} className='absolute inset-0'>
@@ -504,9 +515,12 @@ function StudioClient() {
             <div className='mt-auto px-6 pb-32 md:pb-40'>
               <div className='flex gap-2'>
                 {colors.map((c, i) => (
-                  <div
+                  <button
+                    type='button'
+                    onClick={() => copyHex(c)}
+                    aria-label={`Copy ${c}`}
                     key={i}
-                    className={`h-12 w-20 md:h-16 md:w-28 rounded-xl shadow-lg ring-1 ring-black/10 transition-all duration-700 ${
+                    className={`relative group cursor-pointer h-12 w-20 md:h-16 md:w-28 rounded-xl shadow-lg ring-1 ring-black/10 transition-all duration-700 hover:scale-105 hover:shadow-xl hover:ring-2 hover:ring-white/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${
                       revealed
                         ? 'opacity-100 translate-y-0'
                         : 'opacity-0 translate-y-1'
@@ -515,7 +529,19 @@ function StudioClient() {
                       backgroundColor: c,
                       transitionDelay: `${i * 140}ms`
                     }}
-                  />
+                  >
+                    {/* bottom hex label (hover/focus only) */}
+                    <span
+                      className='absolute inset-x-1 bottom-1 text-[10px] font-mono text-center leading-none opacity-0 group-hover:opacity-100 group-active:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300'
+                      style={{ color: contrastText(c) }}
+                    >
+                      {c}
+                    </span>
+                    {/* top pill tooltip (placed inside swatch to avoid clipping) */}
+                    <span className='absolute left-1/2 -translate-x-1/2 top-1 px-2 py-0.5 rounded-full text-[10px] font-medium transition-all duration-200 pointer-events-none opacity-0 -translate-y-1 bg-black/50 text-white group-hover:opacity-100 group-focus-visible:opacity-100'>
+                      Copy
+                    </span>
+                  </button>
                 ))}
               </div>
             </div>
@@ -571,9 +597,12 @@ function StudioClient() {
               <div>
                 <div className='flex gap-2'>
                   {colors.map((c, i) => (
-                    <div
+                    <button
+                      type='button'
+                      onClick={() => copyHex(c)}
+                      aria-label={`Copy ${c}`}
                       key={i}
-                      className={`h-10 w-16 rounded-xl shadow-lg ring-1 ring-black/10 transition-all duration-700 ${
+                      className={`relative group cursor-pointer h-10 w-16 rounded-xl shadow-lg ring-1 ring-black/10 transition-all duration-700 hover:scale-105 hover:shadow-xl hover:ring-2 hover:ring-white/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${
                         revealed
                           ? 'opacity-100 translate-y-0'
                           : 'opacity-0 translate-y-1'
@@ -582,7 +611,19 @@ function StudioClient() {
                         backgroundColor: c,
                         transitionDelay: `${i * 140}ms`
                       }}
-                    />
+                    >
+                      {/* bottom hex label (hover/focus only) */}
+                      <span
+                        className='absolute inset-x-1 bottom-1 text-[10px] font-mono text-center leading-none opacity-0 group-hover:opacity-100 group-active:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300'
+                        style={{ color: contrastText(c) }}
+                      >
+                        {c}
+                      </span>
+                      {/* top pill tooltip (placed inside swatch to avoid clipping) */}
+                      <span className='absolute left-1/2 -translate-x-1/2 top-1 px-2 py-0.5 rounded-full text-[10px] font-medium transition-all duration-200 pointer-events-none opacity-0 -translate-y-1 bg-black/50 text-white group-hover:opacity-100 group-focus-visible:opacity-100'>
+                        Copy
+                      </span>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -724,7 +765,7 @@ function StudioClient() {
                 <button
                   key={i}
                   onClick={() => copyHex(c)}
-                  className={`group w-full flex items-center gap-3 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 p-3 text-left transition-all duration-700 ${
+                  className={`group w-full flex items-center gap-3 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 p-3 text-left transition-all duration-700 hover:scale-[1.02] ${
                     revealed
                       ? 'opacity-100 translate-y-0'
                       : 'opacity-0 translate-y-1'
@@ -732,7 +773,7 @@ function StudioClient() {
                   style={{ transitionDelay: `${i * 120}ms` }}
                 >
                   <span
-                    className='h-6 w-6 rounded-md ring-1 ring-black/10'
+                    className='h-6 w-6 rounded-md ring-1 ring-black/10 transition-transform duration-300 group-hover:scale-110'
                     style={{ backgroundColor: c }}
                   />
                   <span className='font-mono text-sm tracking-tight'>{c}</span>

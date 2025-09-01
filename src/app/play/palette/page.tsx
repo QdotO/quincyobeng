@@ -303,6 +303,8 @@ function PaletteClient() {
   const gridRef = useRef<HTMLDivElement>(null)
   const posterRef = useRef<HTMLDivElement>(null)
   const [scene, setScene] = useState<'Palette' | 'Poster'>('Palette')
+  const [toast, setToast] = useState<string | undefined>(undefined)
+  const [lastCopiedIndex, setLastCopiedIndex] = useState<number | null>(null)
 
   useEffect(() => {
     const params = new URLSearchParams()
@@ -347,8 +349,14 @@ function PaletteClient() {
   const toggleLock = (idx: number) =>
     setLocks((l) => l.map((v, i) => (i === idx ? !v : v)))
 
-  const copyHex = async (hex: string) => {
+  const copyHex = async (hex: string, idx?: number) => {
     await navigator.clipboard.writeText(hex)
+    if (typeof idx === 'number') {
+      setLastCopiedIndex(idx)
+      setTimeout(() => setLastCopiedIndex(null), 900)
+    }
+    setToast(`${hex} copied`)
+    setTimeout(() => setToast(undefined), 1400)
   }
 
   const copyJSON = async () => {
@@ -432,6 +440,10 @@ function PaletteClient() {
   return (
     <main className='relative min-h-screen'>
       <BackButton href='/work' label='Back to Work' />
+      {/* SR-only live region for announcements */}
+      <div className='sr-only' role='status' aria-live='polite'>
+        {toast || ''}
+      </div>
       {/* Full-bleed stage */}
       <div
         aria-hidden
@@ -584,34 +596,138 @@ function PaletteClient() {
                 >
                   {colors.map((hex, idx) => {
                     const badge = contrastBadge(hex)
+                    const isCopied = lastCopiedIndex === idx
                     return (
                       <div
                         key={idx}
-                        className='rounded-xl border border-border overflow-hidden transition-transform duration-300'
+                        className={`group rounded-xl border border-border overflow-hidden transition-transform duration-300 ${
+                          locks[idx]
+                            ? 'ring-2 ring-electric ring-offset-1 ring-offset-transparent'
+                            : ''
+                        }`}
                         style={{ transitionDelay: `${idx * 40}ms` }}
                       >
-                        <div
-                          className='h-28 flex items-end justify-between p-2 relative'
-                          style={{ backgroundColor: hex }}
-                        >
+                        <div className='relative h-28'>
                           <button
-                            onClick={() => toggleLock(idx)}
-                            className={`text-xs bg-black/40 text-white px-2 py-1 rounded transition-transform duration-200 ${
-                              locks[idx] ? 'scale-105' : 'hover:scale-105'
-                            }`}
-                            title={locks[idx] ? 'Unlock' : 'Lock'}
+                            type='button'
+                            onClick={() => copyHex(hex, idx)}
+                            aria-label={`Copy ${hex}`}
+                            className='absolute inset-0 w-full h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80'
+                            style={{ backgroundColor: hex }}
                           >
-                            {locks[idx] ? '🔒' : '🔓'}
+                            {/* bottom hex label (hover/focus only) */}
+                            <span
+                              className='absolute inset-x-2 bottom-1 text-[10px] font-mono text-center leading-none opacity-0 group-hover:opacity-100 group-active:opacity-100 focus-visible:opacity-100 transition-opacity duration-200'
+                              style={{ color: contrastText(hex) }}
+                            >
+                              {hex}
+                            </span>
+                            {/* top pill tooltip (positioned inside to avoid clipping) */}
+                            <span
+                              className={`absolute left-1/2 -translate-x-1/2 top-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-medium transition-all duration-200 pointer-events-none ${
+                                isCopied
+                                  ? 'opacity-100 translate-y-0 bg-black/60 text-white'
+                                  : 'opacity-0 -translate-y-1 bg-black/50 text-white group-hover:opacity-100 group-focus-visible:opacity-100'
+                              }`}
+                            >
+                              {isCopied ? 'Copied ✓' : 'Copy'}
+                            </span>
+                            {/* center checkmark burst */}
+                            <span
+                              className={`absolute inset-0 z-0 flex items-center justify-center transition-all duration-300 ${
+                                isCopied
+                                  ? 'opacity-100 scale-100'
+                                  : 'opacity-0 scale-75'
+                              }`}
+                              aria-hidden
+                            >
+                              <svg
+                                viewBox='0 0 24 24'
+                                className='h-6 w-6 text-white drop-shadow'
+                                fill='none'
+                                stroke='currentColor'
+                                strokeWidth='2'
+                              >
+                                <path
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
+                                  d='M5 12l4 4L19 6'
+                                />
+                              </svg>
+                            </span>
                           </button>
+                          {/* lock control (top-right, larger hit area, above copy layer) */}
                           <button
-                            onClick={() => copyHex(hex)}
-                            className='text-xs bg-black/40 text-white px-2 py-1 rounded hover:scale-105 transition-transform duration-200'
+                            type='button'
+                            onClick={() => toggleLock(idx)}
+                            aria-pressed={locks[idx]}
+                            aria-label={
+                              locks[idx] ? 'Unlock color' : 'Lock color'
+                            }
+                            title={locks[idx] ? 'Unlock' : 'Lock'}
+                            className={`absolute top-2 right-2 z-20 h-7 w-7 rounded-full flex items-center justify-center transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 ${
+                              locks[idx]
+                                ? 'bg-electric text-dark shadow'
+                                : 'bg-black/45 text-white hover:bg-black/55'
+                            }`}
                           >
-                            Copy
+                            {/* lock icon */}
+                            <svg
+                              viewBox='0 0 24 24'
+                              className='h-4 w-4'
+                              fill='none'
+                              stroke='currentColor'
+                              strokeWidth='1.8'
+                              aria-hidden
+                            >
+                              {locks[idx] ? (
+                                // closed lock
+                                <>
+                                  <path d='M7 11V9a5 5 0 0 1 10 0v2' />
+                                  <rect
+                                    x='5'
+                                    y='11'
+                                    width='14'
+                                    height='10'
+                                    rx='2'
+                                  />
+                                  <circle
+                                    cx='12'
+                                    cy='16'
+                                    r='1.5'
+                                    fill='currentColor'
+                                    stroke='none'
+                                  />
+                                </>
+                              ) : (
+                                // open lock
+                                <>
+                                  <path d='M7 11V9a5 5 0 0 1 9.5-2' />
+                                  <rect
+                                    x='5'
+                                    y='11'
+                                    width='14'
+                                    height='10'
+                                    rx='2'
+                                  />
+                                  <circle
+                                    cx='12'
+                                    cy='16'
+                                    r='1.5'
+                                    fill='currentColor'
+                                    stroke='none'
+                                  />
+                                </>
+                              )}
+                            </svg>
+                            {/* tiny tooltip */}
+                            <span className='absolute -bottom-6 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[10px] font-medium bg-black/60 text-white opacity-0 pointer-events-none transition-opacity duration-150 group-hover:opacity-100'>
+                              {locks[idx] ? 'Locked' : 'Lock'}
+                            </span>
                           </button>
                         </div>
                         <div
-                          className='px-3 py-2 text-sm flex items-center justify-between'
+                          className='px-3 py-2 text-sm flex items-center justify-end'
                           style={{
                             color: contrastText(hex),
                             background: dark
@@ -619,9 +735,8 @@ function PaletteClient() {
                               : 'rgba(0,0,0,0.05)'
                           }}
                         >
-                          <span>{hex}</span>
                           <span
-                            className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
+                            className={`ml-auto px-2 py-0.5 rounded text-[10px] font-semibold ${
                               badge.level === 'Low'
                                 ? 'bg-red-500/20 text-red-300'
                                 : badge.level === 'AA'
@@ -665,11 +780,40 @@ function PaletteClient() {
                       </div>
                       <div className='flex gap-2'>
                         {colors.map((c, i) => (
-                          <div
+                          <button
                             key={i}
-                            className='h-8 w-12 rounded shadow-sm'
+                            type='button'
+                            onClick={() => copyHex(c, i)}
+                            aria-label={`Copy ${c}`}
+                            className='relative h-8 w-12 rounded shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 group'
                             style={{ backgroundColor: c }}
-                          />
+                          >
+                            <span className='absolute inset-x-0 top-1 z-10 mx-auto w-max px-2 py-0.5 rounded-full text-[10px] text-white bg-black/50 opacity-0 -translate-y-1 transition-all duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 pointer-events-none'>
+                              Copy
+                            </span>
+                            <span
+                              className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ${
+                                lastCopiedIndex === i
+                                  ? 'opacity-100 scale-100'
+                                  : 'opacity-0 scale-75'
+                              }`}
+                              aria-hidden
+                            >
+                              <svg
+                                viewBox='0 0 24 24'
+                                className='h-5 w-5 text-white drop-shadow'
+                                fill='none'
+                                stroke='currentColor'
+                                strokeWidth='2'
+                              >
+                                <path
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
+                                  d='M5 12l4 4L19 6'
+                                />
+                              </svg>
+                            </span>
+                          </button>
                         ))}
                       </div>
                     </div>
