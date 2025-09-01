@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
+import BackButton from '@/components/BackButton'
 
 type Adjective = 'modern' | 'trustworthy' | 'fun' | 'elegant' | 'bold' | 'calm'
 type ColorSeed = 'blue' | 'green' | 'purple' | 'orange' | 'pink' | 'teal'
@@ -190,29 +191,7 @@ export default function BrandMoodboardPage() {
 
   return (
     <main className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface px-6 py-10'>
-      {/* Back to Work */}
-      <div className='fixed top-3 left-3 md:top-6 md:left-6 z-50'>
-        <Link
-          href='/work'
-          className='inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-black/40 text-white border border-white/20 backdrop-blur-md hover:bg-black/50 transition'
-        >
-          <svg
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            strokeWidth='1.5'
-            className='h-5 w-5'
-            aria-hidden
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              d='M15 19l-7-7 7-7'
-            />
-          </svg>
-          <span className='hidden sm:inline'>Back to Work</span>
-        </Link>
-      </div>
+      <BackButton href='/work' label='Back to Work' />
       <div className='max-w-6xl mx-auto pb-28 lg:pb-0'>
         {/* Header */}
         <div className='text-center mb-6 md:mb-12'>

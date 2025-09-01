@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useMemo, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
+import BackButton from '@/components/BackButton'
 
 type Palette = {
   key: string
@@ -82,58 +83,75 @@ function PalettePicker({
 function ThemeExplorerInner() {
   const params = useSearchParams()
   const router = useRouter()
-  const [sophKey, setSophKey] = useState(params.get('soph') || 'electric')
-  const [funKey, setFunKey] = useState(params.get('fun') || 'sunset')
-  const [designKey, setDesignKey] = useState(params.get('design') || 'violet')
-  const [corpKey, setCorpKey] = useState(params.get('corp') || 'forest')
-  const [sophMode, setSophMode] = useState<'dark' | 'light'>(
-    (params.get('sophm') as 'dark' | 'light') || 'dark'
+  const [grandKey, setGrandKey] = useState(params.get('grand') || 'electric')
+  const [minimalKey, setMinimalKey] = useState(
+    params.get('minimal') || 'violet'
   )
-  const [funMode, setFunMode] = useState<'dark' | 'light'>(
-    (params.get('funm') as 'dark' | 'light') || 'dark'
+  const [militaryKey, setMilitaryKey] = useState(params.get('mil') || 'forest')
+  const [sportyKey, setSportyKey] = useState(params.get('sporty') || 'electric')
+  const [grittyKey, setGrittyKey] = useState(params.get('gritty') || 'sunset')
+  const [grandMode, setGrandMode] = useState<'dark' | 'light'>(
+    (params.get('grandm') as 'dark' | 'light') || 'dark'
   )
-  const [designMode, setDesignMode] = useState<'dark' | 'light'>(
-    (params.get('designm') as 'dark' | 'light') || 'dark'
+  const [minimalMode, setMinimalMode] = useState<'dark' | 'light'>(
+    (params.get('minimalm') as 'dark' | 'light') || 'dark'
   )
-  const [corpMode, setCorpMode] = useState<'dark' | 'light'>(
-    (params.get('corpm') as 'dark' | 'light') || 'dark'
+  const [militaryMode, setMilitaryMode] = useState<'dark' | 'light'>(
+    (params.get('milm') as 'dark' | 'light') || 'dark'
+  )
+  const [sportyMode, setSportyMode] = useState<'dark' | 'light'>(
+    (params.get('sportym') as 'dark' | 'light') || 'dark'
+  )
+  const [grittyMode, setGrittyMode] = useState<'dark' | 'light'>(
+    (params.get('grittym') as 'dark' | 'light') || 'dark'
   )
 
-  const soph = useMemo(
-    () => PALETTES.find((p) => p.key === sophKey)!,
-    [sophKey]
+  const grand = useMemo(
+    () => PALETTES.find((p) => p.key === grandKey)!,
+    [grandKey]
   )
-  const fun = useMemo(() => PALETTES.find((p) => p.key === funKey)!, [funKey])
-  const design = useMemo(
-    () => PALETTES.find((p) => p.key === designKey)!,
-    [designKey]
+  const minimal = useMemo(
+    () => PALETTES.find((p) => p.key === minimalKey)!,
+    [minimalKey]
   )
-  const corp = useMemo(
-    () => PALETTES.find((p) => p.key === corpKey)!,
-    [corpKey]
+  const military = useMemo(
+    () => PALETTES.find((p) => p.key === militaryKey)!,
+    [militaryKey]
+  )
+  const sporty = useMemo(
+    () => PALETTES.find((p) => p.key === sportyKey)!,
+    [sportyKey]
+  )
+  const gritty = useMemo(
+    () => PALETTES.find((p) => p.key === grittyKey)!,
+    [grittyKey]
   )
 
   // URL state sync
   useEffect(() => {
     const q = new URLSearchParams()
-    q.set('soph', sophKey)
-    q.set('fun', funKey)
-    q.set('design', designKey)
-    q.set('corp', corpKey)
-    q.set('sophm', sophMode)
-    q.set('funm', funMode)
-    q.set('designm', designMode)
-    q.set('corpm', corpMode)
+    q.set('grand', grandKey)
+    q.set('minimal', minimalKey)
+    q.set('mil', militaryKey)
+    q.set('sporty', sportyKey)
+    q.set('gritty', grittyKey)
+    q.set('grandm', grandMode)
+    q.set('minimalm', minimalMode)
+    q.set('milm', militaryMode)
+    q.set('sportym', sportyMode)
+    q.set('grittym', grittyMode)
     router.replace(`?${q.toString()}`, { scroll: false })
   }, [
-    sophKey,
-    funKey,
-    designKey,
-    corpKey,
-    sophMode,
-    funMode,
-    designMode,
-    corpMode,
+    grandKey,
+    minimalKey,
+    militaryKey,
+    sportyKey,
+    grittyKey,
+    grandMode,
+    minimalMode,
+    militaryMode,
+    sportyMode,
+    grittyMode,
     router
   ])
 
@@ -202,335 +220,251 @@ function ThemeExplorerInner() {
   }
 
   return (
-    <main className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface px-6 py-10'>
-      {/* Back to Work */}
-      <div className='fixed top-3 left-3 md:top-6 md:left-6 z-50'>
-        <Link
-          href='/work'
-          className='inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-black/40 text-white border border-white/20 backdrop-blur-md hover:bg-black/50 transition'
-        >
-          <svg
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            strokeWidth='1.5'
-            className='h-5 w-5'
-            aria-hidden
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              d='M15 19l-7-7 7-7'
-            />
-          </svg>
-          <span className='hidden sm:inline'>Back to Work</span>
-        </Link>
-      </div>
-
+    <main className='px-4 py-8 md:py-10'>
+      <BackButton href='/work' label='Back to Work' />
       <div className='max-w-6xl mx-auto'>
-        <header className='mb-10 text-center'>
+        <header className='mb-8 md:mb-10 text-center'>
           <h1 className='text-3xl md:text-4xl font-theme-display font-bold text-light mb-2'>
-            Theme Explorer
+            Homepage Theme Explorer
           </h1>
           <p className='text-muted'>
-            Explore alternative vibes for the site. Each block has its own
-            palette control.
+            Preview radically different homepage hero styles. Each block uses
+            the homepage content so you can judge the real look and feel.
           </p>
-          <div className='mt-4 flex justify-center'>
+          <div className='mt-4 flex items-center justify-center gap-3'>
             <button
               onClick={resetTheme}
-              className='px-4 py-2 rounded-lg border border-white/20 text-white/80 hover:bg-white/10 transition text-sm'
+              className='text-sm px-3 py-1 rounded-md border border-border text-light hover:bg-dark/30'
             >
-              Reset Site Theme
+              Reset site theme
             </button>
           </div>
         </header>
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-          {/* Sophisticated */}
+          {/* Grand */}
           <section className='bg-surface border border-border rounded-2xl p-6'>
             <div className='flex items-start justify-between gap-4 mb-3'>
               <div>
                 <h2 className='text-light font-serifDisplay text-xl font-bold'>
-                  Sophisticated
+                  Grand
                 </h2>
                 <p className='text-muted text-sm'>
-                  Calm, refined, high contrast with generous spacing.
+                  Elegant, oversized typography with ceremonial glow.
                 </p>
               </div>
               <div className='hidden md:flex gap-1'>
-                {soph.colors.map((c) => (
+                {grand.colors.map((c) => (
                   <Swatch key={c} color={c} />
                 ))}
               </div>
             </div>
-            <div className='mb-2 text-[10px] uppercase tracking-widest text-light/60'>
-              Conic + Radial overlays
-            </div>
             <div className='flex items-center justify-between gap-3'>
-              <PalettePicker value={sophKey} onChange={setSophKey} />
+              <PalettePicker value={grandKey} onChange={setGrandKey} />
               <div className='shrink-0'>
                 <span className='text-xs text-muted mr-2'>Mode</span>
                 <button
                   onClick={() =>
-                    setSophMode((m) => (m === 'dark' ? 'light' : 'dark'))
+                    setGrandMode((m) => (m === 'dark' ? 'light' : 'dark'))
                   }
                   className={`px-3 py-1 rounded-full border ${
-                    sophMode === 'dark'
+                    grandMode === 'dark'
                       ? 'border-electric text-electric'
                       : 'border-border text-light/80'
                   }`}
                 >
-                  {sophMode === 'dark' ? 'Dark' : 'Light'}
+                  {grandMode === 'dark' ? 'Dark' : 'Light'}
                 </button>
               </div>
             </div>
-            <div className='mt-6 rounded-xl overflow-hidden border border-border'>
-              <div
-                className='px-8 py-12 with-texture'
-                style={{
-                  background:
-                    sophMode === 'dark'
-                      ? `conic-gradient(from 160deg at 30% 20%, ${soph.colors[1]}22, transparent 40%), radial-gradient(800px 300px at -10% 0%, ${soph.colors[0]}11, transparent 60%), ${soph.colors[2]}`
-                      : `conic-gradient(from 160deg at 30% 20%, ${soph.colors[1]}11, transparent 40%), ${soph.colors[3]}`
-                }}
-              >
-                <h3
-                  className='font-serifDisplay text-4xl md:text-5xl font-black tracking-tight'
-                  style={{
-                    color: sophMode === 'dark' ? soph.colors[3] : '#0b0b0b'
-                  }}
-                >
-                  Elegant craft, lasting impact
-                </h3>
-                <p
-                  className='mt-3 max-w-xl'
-                  style={{
-                    color:
-                      sophMode === 'dark' ? `${soph.colors[3]}CC` : '#374151'
-                  }}
-                >
-                  Quiet confidence with a crisp typographic rhythm and tasteful
-                  accents.
-                </p>
-                <div className='mt-6'>
-                  <a
-                    href='#'
-                    className='inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold'
-                    style={{
-                      background: `linear-gradient(90deg, ${soph.colors[0]}, ${soph.colors[1]})`,
-                      color: '#0b0b0b'
-                    }}
-                  >
-                    Get in touch
-                  </a>
-                </div>
-                <div className='mt-4'>
-                  <button
-                    onClick={() =>
-                      promote('Sophisticated', sophKey, sophMode, {
-                        display: 'playfair',
-                        sans: 'inter'
-                      })
-                    }
-                    className='px-4 py-2 rounded-lg border border-electric text-electric hover:bg-electric hover:text-dark transition text-sm'
-                  >
-                    Promote to Site
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Fun Artistic */}
-          <section className='bg-surface border border-border rounded-2xl p-6'>
-            <div className='flex items-start justify-between gap-4 mb-3'>
-              <div>
-                <h2 className='text-light font-display text-xl font-bold'>
-                  Fun • Artistic
-                </h2>
-                <p className='text-muted text-sm'>
-                  Energetic gradients, playful motion, bold color blocks.
-                </p>
-              </div>
-              <div className='hidden md:flex gap-1'>
-                {fun.colors.map((c) => (
-                  <Swatch key={c} color={c} />
-                ))}
-              </div>
-            </div>
-            <div className='mb-2 text-[10px] uppercase tracking-widest text-light/60'>
-              Repeating Radial + Radial
-            </div>
-            <div className='flex items-center justify-between gap-3'>
-              <PalettePicker value={funKey} onChange={setFunKey} />
-              <div className='shrink-0'>
-                <span className='text-xs text-muted mr-2'>Mode</span>
-                <button
-                  onClick={() =>
-                    setFunMode((m) => (m === 'dark' ? 'light' : 'dark'))
-                  }
-                  className={`px-3 py-1 rounded-full border ${
-                    funMode === 'dark'
-                      ? 'border-electric text-electric'
-                      : 'border-border text-light/80'
-                  }`}
-                >
-                  {funMode === 'dark' ? 'Dark' : 'Light'}
-                </button>
-              </div>
-            </div>
-            <div className='mt-6 rounded-xl overflow-hidden border border-border'>
+            <div className='mt-3 rounded-xl overflow-hidden border border-border'>
               <div
                 className='relative px-8 py-12 with-texture'
                 style={{
                   background:
-                    funMode === 'dark'
-                      ? `repeating-radial-gradient(circle at 80% 120%, ${fun.colors[1]}22 0 8px, transparent 8px 16px), radial-gradient(1200px 300px at 20% -10%, ${fun.colors[1]}55, transparent), radial-gradient(1200px 400px at 110% 10%, ${fun.colors[0]}44, transparent), ${fun.colors[2]}`
-                      : `repeating-radial-gradient(circle at 20% -10%, ${fun.colors[0]}11 0 6px, transparent 6px 14px), ${fun.colors[3]}`
+                    grandMode === 'dark'
+                      ? `conic-gradient(from 200deg at 30% 10%, ${grand.colors[1]}22, transparent 40%), radial-gradient(900px 300px at 110% -10%, ${grand.colors[0]}22, transparent 60%), ${grand.colors[2]}`
+                      : `conic-gradient(from 200deg at 30% 10%, ${grand.colors[1]}11, transparent 40%), ${grand.colors[3]}`
                 }}
               >
-                <div
-                  className='absolute inset-0 opacity-20 pointer-events-none'
-                  style={{
-                    background: `conic-gradient(from 90deg, ${fun.colors[0]}, ${fun.colors[1]}, ${fun.colors[0]})`
-                  }}
-                />
-                <h3
-                  className='relative font-display text-4xl md:text-5xl font-black tracking-tight'
-                  style={{
-                    color: funMode === 'dark' ? fun.colors[3] : '#0b0b0b'
-                  }}
-                >
-                  Make it memorable
-                </h3>
-                <p
-                  className='relative mt-3 max-w-xl'
-                  style={{
-                    color: funMode === 'dark' ? `${fun.colors[3]}CC` : '#374151'
-                  }}
-                >
-                  Motion-friendly layers and delightful accents that feel alive.
-                </p>
-                <div className='relative mt-6'>
-                  <a
-                    href='#'
-                    className='inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold border'
+                <div className='relative z-10 text-center max-w-3xl mx-auto'>
+                  <h3
+                    className='font-serifDisplay text-5xl md:text-6xl font-extrabold tracking-tight'
                     style={{
-                      borderColor: fun.colors[0],
-                      color: fun.colors[0],
-                      backgroundColor: `${fun.colors[3]}10`
+                      color: grandMode === 'dark' ? grand.colors[3] : '#0b0b0b'
                     }}
                   >
-                    See examples
-                  </a>
-                </div>
-                <div className='relative mt-4'>
-                  <button
-                    onClick={() =>
-                      promote('Fun Artistic', funKey, funMode, {
-                        display: 'spaceGrotesk',
-                        sans: 'spaceGrotesk'
-                      })
-                    }
-                    className='px-4 py-2 rounded-lg border border-electric text-electric hover:bg-electric hover:text-dark transition text-sm'
+                    Quincy{' '}
+                    <span className='bg-gradient-to-r from-electric to-electric-secondary bg-clip-text text-transparent'>
+                      Obeng
+                    </span>
+                  </h3>
+                  <p
+                    className='mt-4 text-lg md:text-xl font-light'
+                    style={{
+                      color:
+                        grandMode === 'dark'
+                          ? `${grand.colors[3]}CC`
+                          : '#374151'
+                    }}
                   >
-                    Promote to Site
-                  </button>
+                    Senior Software Engineer crafting digital experiences that
+                    matter.
+                    <span style={{ color: grand.colors[0] }}>
+                      {' '}
+                      10+ years
+                    </span>{' '}
+                    of turning complex problems into elegant solutions.
+                  </p>
+                  <div className='mt-6 flex flex-col sm:flex-row gap-3 justify-center'>
+                    <Link
+                      href='/work'
+                      className='inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold'
+                      style={{
+                        background: `linear-gradient(90deg, ${grand.colors[0]}, ${grand.colors[1]})`,
+                        color: '#0b0b0b'
+                      }}
+                    >
+                      View Samples
+                    </Link>
+                    <Link
+                      href='/contact'
+                      className='inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold border'
+                      style={{
+                        borderColor: grand.colors[0],
+                        color: grand.colors[0],
+                        backgroundColor: `${grand.colors[3]}10`
+                      }}
+                    >
+                      Let’s Connect
+                    </Link>
+                  </div>
+                  <div className='mt-5 text-[10px] uppercase tracking-widest text-light/60'>
+                    Conic + Radial overlays
+                  </div>
+                  <div className='mt-4'>
+                    <button
+                      onClick={() =>
+                        promote('Grand', grandKey, grandMode, {
+                          display: 'playfair',
+                          sans: 'inter'
+                        })
+                      }
+                      className='px-4 py-2 rounded-lg border border-electric text-electric hover:bg-electric hover:text-dark transition text-sm'
+                    >
+                      Promote to Site
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Design Focused */}
+          {/* Minimal */}
           <section className='bg-surface border border-border rounded-2xl p-6'>
             <div className='flex items-start justify-between gap-4 mb-3'>
               <div>
                 <h2 className='text-light font-sans text-xl font-bold'>
-                  Design Focused
+                  Minimal
                 </h2>
                 <p className='text-muted text-sm'>
-                  Type-forward, measured rhythm, grid clarity with subtle rules.
+                  Quiet, ample whitespace, precise alignment and clarity.
                 </p>
               </div>
               <div className='hidden md:flex gap-1'>
-                {design.colors.map((c) => (
+                {minimal.colors.map((c) => (
                   <Swatch key={c} color={c} />
                 ))}
               </div>
             </div>
-            <div className='mb-2 text-[10px] uppercase tracking-widest text-light/60'>
-              Repeating Linear
-            </div>
             <div className='flex items-center justify-between gap-3'>
-              <PalettePicker value={designKey} onChange={setDesignKey} />
+              <PalettePicker value={minimalKey} onChange={setMinimalKey} />
               <div className='shrink-0'>
                 <span className='text-xs text-muted mr-2'>Mode</span>
                 <button
                   onClick={() =>
-                    setDesignMode((m) => (m === 'dark' ? 'light' : 'dark'))
+                    setMinimalMode((m) => (m === 'dark' ? 'light' : 'dark'))
                   }
                   className={`px-3 py-1 rounded-full border ${
-                    designMode === 'dark'
+                    minimalMode === 'dark'
                       ? 'border-electric text-electric'
                       : 'border-border text-light/80'
                   }`}
                 >
-                  {designMode === 'dark' ? 'Dark' : 'Light'}
+                  {minimalMode === 'dark' ? 'Dark' : 'Light'}
                 </button>
               </div>
             </div>
-            <div className='mt-6 rounded-xl overflow-hidden border border-border'>
+            <div className='mt-3 rounded-xl overflow-hidden border border-border'>
               <div
                 className='px-8 py-12 with-texture'
                 style={{
                   background:
-                    designMode === 'dark'
-                      ? `linear-gradient(180deg, ${design.colors[3]}, ${design.colors[3]}), repeating-linear-gradient(90deg, transparent, transparent 12px, ${design.colors[4]}22 12px, ${design.colors[4]}22 13px)`
-                      : `repeating-linear-gradient(90deg, transparent, transparent 16px, ${design.colors[4]}11 16px, ${design.colors[4]}11 17px), ${design.colors[3]}`
+                    minimalMode === 'dark'
+                      ? `repeating-linear-gradient(0deg, ${minimal.colors[4]}22 0 1px, transparent 1px 16px), repeating-linear-gradient(90deg, ${minimal.colors[4]}22 0 1px, transparent 1px 16px), linear-gradient(180deg, ${minimal.colors[2]}, ${minimal.colors[2]})`
+                      : `repeating-linear-gradient(0deg, ${minimal.colors[4]}11 0 1px, transparent 1px 12px), repeating-linear-gradient(90deg, ${minimal.colors[4]}11 0 1px, transparent 1px 12px), ${minimal.colors[3]}`
                 }}
               >
-                <div className='max-w-2xl'>
-                  <div
-                    className='text-xs uppercase tracking-widest mb-3'
-                    style={{ color: design.colors[4] }}
-                  >
-                    Case Study
-                  </div>
+                <div className='text-center max-w-3xl mx-auto'>
                   <h3
-                    className='font-sans text-4xl md:text-5xl font-black tracking-tight'
+                    className='font-sans text-5xl md:text-6xl font-extrabold tracking-tight'
                     style={{
                       color:
-                        designMode === 'dark' ? design.colors[2] : '#0b0b0b'
+                        minimalMode === 'dark' ? minimal.colors[3] : '#0b0b0b'
                     }}
                   >
-                    Clarity by design
+                    Quincy{' '}
+                    <span className='bg-gradient-to-r from-electric to-electric-secondary bg-clip-text text-transparent'>
+                      Obeng
+                    </span>
                   </h3>
                   <p
-                    className='mt-3'
+                    className='mt-4 text-base md:text-lg'
                     style={{
-                      color: designMode === 'dark' ? '#374151' : '#374151'
+                      color:
+                        minimalMode === 'dark'
+                          ? `${minimal.colors[3]}CC`
+                          : '#374151'
                     }}
                   >
-                    A system of constraints that makes good decisions the
-                    default.
+                    Senior Software Engineer crafting digital experiences that
+                    matter.
+                    <span style={{ color: minimal.colors[0] }}>
+                      {' '}
+                      10+ years
+                    </span>{' '}
+                    of turning complex problems into elegant solutions.
                   </p>
-                  <div className='mt-6'>
-                    <a
-                      href='#'
+                  <div className='mt-6 flex flex-col sm:flex-row gap-3 justify-center'>
+                    <Link
+                      href='/work'
                       className='inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold'
                       style={{
-                        background: `linear-gradient(90deg, ${design.colors[0]}, ${design.colors[1]})`,
+                        background: `linear-gradient(90deg, ${minimal.colors[0]}, ${minimal.colors[1]})`,
                         color: '#0b0b0b'
                       }}
                     >
-                      Read the story
-                    </a>
+                      View Samples
+                    </Link>
+                    <Link
+                      href='/contact'
+                      className='inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold border'
+                      style={{
+                        borderColor: minimal.colors[0],
+                        color: minimal.colors[0],
+                        backgroundColor: `${minimal.colors[3]}10`
+                      }}
+                    >
+                      Let’s Connect
+                    </Link>
+                  </div>
+                  <div className='mt-5 text-[10px] uppercase tracking-widest text-light/60'>
+                    Flat + Subtle grid
                   </div>
                   <div className='mt-4'>
                     <button
                       onClick={() =>
-                        promote('Design Focused', designKey, designMode, {
+                        promote('Minimal', minimalKey, minimalMode, {
                           display: 'inter',
                           sans: 'inter'
                         })
@@ -545,121 +479,356 @@ function ThemeExplorerInner() {
             </div>
           </section>
 
-          {/* Corporate */}
+          {/* Military */}
           <section className='bg-surface border border-border rounded-2xl p-6'>
             <div className='flex items-start justify-between gap-4 mb-3'>
               <div>
                 <h2 className='text-light font-theme-sans text-xl font-bold'>
-                  Corporate
+                  Military
                 </h2>
                 <p className='text-muted text-sm'>
-                  Trust-centric, structured, with emphasis on stability and
-                  clarity.
+                  Structured, rugged texture, disciplined geometry.
                 </p>
               </div>
               <div className='hidden md:flex gap-1'>
-                {corp.colors.map((c) => (
+                {military.colors.map((c) => (
                   <Swatch key={c} color={c} />
                 ))}
               </div>
             </div>
-            <div className='mb-2 text-[10px] uppercase tracking-widest text-light/60'>
-              Linear + Repeating Grid
-            </div>
             <div className='flex items-center justify-between gap-3'>
-              <PalettePicker value={corpKey} onChange={setCorpKey} />
+              <PalettePicker value={militaryKey} onChange={setMilitaryKey} />
               <div className='shrink-0'>
                 <span className='text-xs text-muted mr-2'>Mode</span>
                 <button
                   onClick={() =>
-                    setCorpMode((m) => (m === 'dark' ? 'light' : 'dark'))
+                    setMilitaryMode((m) => (m === 'dark' ? 'light' : 'dark'))
                   }
                   className={`px-3 py-1 rounded-full border ${
-                    corpMode === 'dark'
+                    militaryMode === 'dark'
                       ? 'border-electric text-electric'
                       : 'border-border text-light/80'
                   }`}
                 >
-                  {corpMode === 'dark' ? 'Dark' : 'Light'}
+                  {militaryMode === 'dark' ? 'Dark' : 'Light'}
                 </button>
               </div>
             </div>
-            <div className='mt-6 rounded-xl overflow-hidden border border-border'>
+            <div className='mt-3 rounded-xl overflow-hidden border border-border'>
               <div
                 className='px-8 py-12 with-texture'
                 style={{
                   background:
-                    corpMode === 'dark'
-                      ? `repeating-linear-gradient(0deg, ${corp.colors[4]}14 0 1px, transparent 1px 14px), repeating-linear-gradient(90deg, ${corp.colors[4]}14 0 1px, transparent 1px 14px), linear-gradient(145deg, ${corp.colors[2]}, ${corp.colors[4]})`
-                      : `repeating-linear-gradient(0deg, ${corp.colors[1]}11 0 1px, transparent 1px 16px), ${corp.colors[3]}`
+                    militaryMode === 'dark'
+                      ? `repeating-linear-gradient(45deg, ${military.colors[4]}22 0 2px, transparent 2px 14px), linear-gradient(160deg, ${military.colors[2]}, ${military.colors[4]})`
+                      : `repeating-linear-gradient(45deg, ${military.colors[0]}11 0 2px, transparent 2px 16px), ${military.colors[3]}`
                 }}
               >
-                <div className='max-w-2xl'>
+                <div className='max-w-3xl mx-auto text-center'>
                   <div
-                    className='text-sm'
-                    style={{
-                      color: corpMode === 'dark' ? corp.colors[3] : '#0b0b0b'
-                    }}
+                    className='text-xs uppercase tracking-widest mb-2'
+                    style={{ color: military.colors[4] }}
                   >
-                    Trusted by teams at
-                  </div>
-                  <div
-                    className='mt-2 flex gap-4 opacity-80'
-                    style={{
-                      color: corpMode === 'dark' ? corp.colors[3] : '#0b0b0b'
-                    }}
-                  >
-                    <span>Acme Co</span>
-                    <span>Globex</span>
-                    <span>Umbrella</span>
+                    Discipline • Precision
                   </div>
                   <h3
-                    className='mt-6 font-theme-sans text-4xl md:text-5xl font-black tracking-tight'
-                    style={{
-                      color: corpMode === 'dark' ? corp.colors[3] : '#0b0b0b'
-                    }}
-                  >
-                    Partner for the long run
-                  </h3>
-                  <p
-                    className='mt-3'
+                    className='font-theme-sans text-5xl md:text-6xl font-extrabold tracking-tight'
                     style={{
                       color:
-                        corpMode === 'dark' ? `${corp.colors[3]}CC` : '#374151'
+                        militaryMode === 'dark' ? military.colors[3] : '#0b0b0b'
                     }}
                   >
-                    Clear roadmaps, measurable outcomes, and predictable
-                    delivery.
+                    Quincy{' '}
+                    <span className='bg-gradient-to-r from-electric to-electric-secondary bg-clip-text text-transparent'>
+                      Obeng
+                    </span>
+                  </h3>
+                  <p
+                    className='mt-4 text-base md:text-lg'
+                    style={{
+                      color:
+                        militaryMode === 'dark'
+                          ? `${military.colors[3]}CC`
+                          : '#374151'
+                    }}
+                  >
+                    Senior Software Engineer crafting reliable, robust systems.
+                    <span style={{ color: military.colors[0] }}>
+                      {' '}
+                      10+ years
+                    </span>{' '}
+                    building under constraints.
                   </p>
-                  <div className='mt-6 flex gap-3'>
-                    <a
-                      href='#'
-                      className='inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold'
+                  <div className='mt-6 flex flex-col sm:flex-row gap-3 justify-center'>
+                    <Link
+                      href='/work'
+                      className='inline-flex items-center gap-2 px-6 py-3 rounded font-semibold border'
                       style={{
-                        background: `linear-gradient(90deg, ${corp.colors[0]}, ${corp.colors[1]})`,
+                        borderColor: military.colors[0],
+                        color: military.colors[0],
+                        backgroundColor: `${military.colors[3]}10`
+                      }}
+                    >
+                      View Samples
+                    </Link>
+                    <Link
+                      href='/contact'
+                      className='inline-flex items-center gap-2 px-6 py-3 rounded font-semibold'
+                      style={{
+                        background: `linear-gradient(90deg, ${military.colors[0]}, ${military.colors[1]})`,
                         color: '#0b0b0b'
                       }}
                     >
-                      Contact Sales
-                    </a>
-                    <a
-                      href='#'
-                      className='inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold border'
-                      style={{
-                        borderColor: corp.colors[0],
-                        color: corp.colors[0],
-                        backgroundColor: `${corp.colors[3]}10`
-                      }}
-                    >
-                      See Pricing
-                    </a>
+                      Let’s Connect
+                    </Link>
+                  </div>
+                  <div className='mt-5 text-[10px] uppercase tracking-widest text-light/60'>
+                    Diagonal stripes + Linear
                   </div>
                   <div className='mt-4'>
                     <button
                       onClick={() =>
-                        promote('Corporate', corpKey, corpMode, {
+                        promote('Military', militaryKey, militaryMode, {
                           display: 'ibmPlex',
                           sans: 'ibmPlex'
+                        })
+                      }
+                      className='px-4 py-2 rounded-lg border border-electric text-electric hover:bg-electric hover:text-dark transition text-sm'
+                    >
+                      Promote to Site
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Sporty */}
+          <section className='bg-surface border border-border rounded-2xl p-6'>
+            <div className='flex items-start justify-between gap-4 mb-3'>
+              <div>
+                <h2 className='text-light font-display text-xl font-bold'>
+                  Sporty
+                </h2>
+                <p className='text-muted text-sm'>
+                  Fast, slanted layers with energetic accents.
+                </p>
+              </div>
+              <div className='hidden md:flex gap-1'>
+                {sporty.colors.map((c) => (
+                  <Swatch key={c} color={c} />
+                ))}
+              </div>
+            </div>
+            <div className='flex items-center justify-between gap-3'>
+              <PalettePicker value={sportyKey} onChange={setSportyKey} />
+              <div className='shrink-0'>
+                <span className='text-xs text-muted mr-2'>Mode</span>
+                <button
+                  onClick={() =>
+                    setSportyMode((m) => (m === 'dark' ? 'light' : 'dark'))
+                  }
+                  className={`px-3 py-1 rounded-full border ${
+                    sportyMode === 'dark'
+                      ? 'border-electric text-electric'
+                      : 'border-border text-light/80'
+                  }`}
+                >
+                  {sportyMode === 'dark' ? 'Dark' : 'Light'}
+                </button>
+              </div>
+            </div>
+            <div className='mt-3 rounded-xl overflow-hidden border border-border'>
+              <div
+                className='relative px-8 py-12 with-texture'
+                style={{
+                  background:
+                    sportyMode === 'dark'
+                      ? `repeating-conic-gradient(from 45deg at 0% 0%, ${sporty.colors[4]}22 0deg 6deg, transparent 6deg 18deg), linear-gradient(155deg, ${sporty.colors[2]}, ${sporty.colors[4]})`
+                      : `repeating-linear-gradient(-20deg, ${sporty.colors[1]}11 0 2px, transparent 2px 10px), ${sporty.colors[3]}`
+                }}
+              >
+                <div className='text-center max-w-3xl mx-auto'>
+                  <h3
+                    className='font-display text-5xl md:text-6xl font-extrabold tracking-tight'
+                    style={{
+                      color:
+                        sportyMode === 'dark' ? sporty.colors[3] : '#0b0b0b'
+                    }}
+                  >
+                    Quincy{' '}
+                    <span className='bg-gradient-to-r from-electric to-electric-secondary bg-clip-text text-transparent'>
+                      Obeng
+                    </span>
+                  </h3>
+                  <p
+                    className='mt-4 text-base md:text-lg'
+                    style={{
+                      color:
+                        sportyMode === 'dark'
+                          ? `${sporty.colors[3]}CC`
+                          : '#374151'
+                    }}
+                  >
+                    Senior Software Engineer, moving fast without breaking
+                    things.
+                    <span style={{ color: sporty.colors[0] }}>
+                      {' '}
+                      10+ years
+                    </span>{' '}
+                    shipping quality.
+                  </p>
+                  <div className='mt-6 flex flex-col sm:flex-row gap-3 justify-center'>
+                    <Link
+                      href='/work'
+                      className='inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold'
+                      style={{
+                        background: `linear-gradient(90deg, ${sporty.colors[0]}, ${sporty.colors[1]})`,
+                        color: '#0b0b0b'
+                      }}
+                    >
+                      View Samples
+                    </Link>
+                    <Link
+                      href='/contact'
+                      className='inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold border'
+                      style={{
+                        borderColor: sporty.colors[0],
+                        color: sporty.colors[0],
+                        backgroundColor: `${sporty.colors[3]}10`
+                      }}
+                    >
+                      Let’s Connect
+                    </Link>
+                  </div>
+                  <div className='mt-5 text-[10px] uppercase tracking-widest text-light/60'>
+                    Linear + Radial beam
+                  </div>
+                  <div className='mt-4'>
+                    <button
+                      onClick={() =>
+                        promote('Sporty', sportyKey, sportyMode, {
+                          display: 'spaceGrotesk',
+                          sans: 'spaceGrotesk'
+                        })
+                      }
+                      className='px-4 py-2 rounded-lg border border-electric text-electric hover:bg-electric hover:text-dark transition text-sm'
+                    >
+                      Promote to Site
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Gritty / Moody / Discipline */}
+          <section className='bg-surface border border-border rounded-2xl p-6 md:col-span-2'>
+            <div className='flex items-start justify-between gap-4 mb-3'>
+              <div>
+                <h2 className='text-light font-display text-xl font-bold'>
+                  Gritty • Moody • Discipline
+                </h2>
+                <p className='text-muted text-sm'>
+                  Grain, low-saturation overlays, heavy weight and measured
+                  cadence.
+                </p>
+              </div>
+              <div className='hidden md:flex gap-1'>
+                {gritty.colors.map((c) => (
+                  <Swatch key={c} color={c} />
+                ))}
+              </div>
+            </div>
+            <div className='flex items-center justify-between gap-3'>
+              <PalettePicker value={grittyKey} onChange={setGrittyKey} />
+              <div className='shrink-0'>
+                <span className='text-xs text-muted mr-2'>Mode</span>
+                <button
+                  onClick={() =>
+                    setGrittyMode((m) => (m === 'dark' ? 'light' : 'dark'))
+                  }
+                  className={`px-3 py-1 rounded-full border ${
+                    grittyMode === 'dark'
+                      ? 'border-electric text-electric'
+                      : 'border-border text-light/80'
+                  }`}
+                >
+                  {grittyMode === 'dark' ? 'Dark' : 'Light'}
+                </button>
+              </div>
+            </div>
+            <div className='mt-3 rounded-xl overflow-hidden border border-border'>
+              <div
+                className='relative px-8 py-14 with-texture'
+                style={{
+                  background:
+                    grittyMode === 'dark'
+                      ? `repeating-radial-gradient(circle at 20% 30%, ${gritty.colors[4]}22 0 1px, transparent 1px 12px), repeating-radial-gradient(circle at 80% 70%, ${gritty.colors[4]}22 0 1px, transparent 1px 10px), linear-gradient(180deg, ${gritty.colors[2]}, ${gritty.colors[2]})`
+                      : `radial-gradient(600px 200px at 50% -10%, ${gritty.colors[1]}0F, transparent 60%), ${gritty.colors[3]}`
+                }}
+              >
+                <div className='text-center max-w-4xl mx-auto'>
+                  <h3
+                    className='font-display text-5xl md:text-6xl font-black tracking-tight'
+                    style={{
+                      color:
+                        grittyMode === 'dark' ? gritty.colors[3] : '#0b0b0b'
+                    }}
+                  >
+                    Quincy{' '}
+                    <span className='bg-gradient-to-r from-electric to-electric-secondary bg-clip-text text-transparent'>
+                      Obeng
+                    </span>
+                  </h3>
+                  <p
+                    className='mt-4 text-base md:text-lg'
+                    style={{
+                      color:
+                        grittyMode === 'dark'
+                          ? `${gritty.colors[3]}CC`
+                          : '#374151'
+                    }}
+                  >
+                    Senior Software Engineer with a builder’s mindset.
+                    <span style={{ color: gritty.colors[0] }}>
+                      {' '}
+                      10+ years
+                    </span>{' '}
+                    shipping, learning, iterating.
+                  </p>
+                  <div className='mt-6 flex flex-col sm:flex-row gap-3 justify-center'>
+                    <Link
+                      href='/work'
+                      className='inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold'
+                      style={{
+                        background: `linear-gradient(90deg, ${gritty.colors[0]}, ${gritty.colors[1]})`,
+                        color: '#0b0b0b'
+                      }}
+                    >
+                      View Samples
+                    </Link>
+                    <Link
+                      href='/contact'
+                      className='inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold border'
+                      style={{
+                        borderColor: gritty.colors[0],
+                        color: gritty.colors[0],
+                        backgroundColor: `${gritty.colors[3]}10`
+                      }}
+                    >
+                      Let’s Connect
+                    </Link>
+                  </div>
+                  <div className='mt-5 text-[10px] uppercase tracking-widest text-light/60'>
+                    Grid texture + Flat
+                  </div>
+                  <div className='mt-4'>
+                    <button
+                      onClick={() =>
+                        promote('Gritty', grittyKey, grittyMode, {
+                          display: 'spaceGrotesk',
+                          sans: 'spaceGrotesk'
                         })
                       }
                       className='px-4 py-2 rounded-lg border border-electric text-electric hover:bg-electric hover:text-dark transition text-sm'

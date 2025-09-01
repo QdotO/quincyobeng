@@ -4,6 +4,7 @@ import { Suspense, useEffect, useRef, useState } from 'react'
 import * as htmlToImage from 'html-to-image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import BackButton from '@/components/BackButton'
 
 // Borrow types from palette page
 type Scheme =
@@ -448,29 +449,7 @@ function StudioClient() {
 
   return (
     <main className='relative min-h-screen'>
-      {/* Back to Work */}
-      <div className='fixed top-3 left-3 md:top-6 md:left-6 z-50 pointer-events-auto'>
-        <Link
-          href='/work'
-          className='inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-black/40 text-white border border-white/20 backdrop-blur-md hover:bg-black/50 transition'
-        >
-          <svg
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            strokeWidth='1.5'
-            className='h-5 w-5'
-            aria-hidden
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              d='M15 19l-7-7 7-7'
-            />
-          </svg>
-          <span className='hidden sm:inline'>Back to Work</span>
-        </Link>
-      </div>
+      <BackButton href='/work' label='Back to Work' />
       {/* Desktop: Full-screen poster */}
       <div className='hidden md:block absolute inset-0 z-0'>
         <div ref={posterRefFull} className='absolute inset-0'>
