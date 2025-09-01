@@ -20,17 +20,17 @@ export default function ThemeRuntime() {
         if (!raw) return
         const t = JSON.parse(raw) as SiteTheme
         if (!Array.isArray(t.colors) || t.colors.length < 5) return
-  const [accent, accentSecondary, dark, light, border] = t.colors
+        const [accent, accentSecondary, dark, light, border] = t.colors
         const root = document.documentElement
         root.style.setProperty('--accent-color', accent)
         root.style.setProperty('--accent-secondary-color', accentSecondary)
-  // Map extended color tokens
-  root.style.setProperty('--color-dark', dark)
-  root.style.setProperty('--color-dark-secondary', 'rgb(26,26,26)')
-  root.style.setProperty('--color-light', light)
-  root.style.setProperty('--color-border', border)
-  // Derive surface from dark
-  root.style.setProperty('--color-surface', dark)
+        // Map extended color tokens
+        root.style.setProperty('--color-dark', dark)
+        root.style.setProperty('--color-dark-secondary', 'rgb(26,26,26)')
+        root.style.setProperty('--color-light', light)
+        root.style.setProperty('--color-border', border)
+        // Derive surface from dark
+        root.style.setProperty('--color-surface', dark)
         root.style.setProperty(
           '--background-start-rgb',
           t.mode === 'dark' ? '10, 10, 10' : '255, 255, 255'
@@ -80,7 +80,7 @@ export default function ThemeRuntime() {
       root.style.removeProperty('--color-surface')
       root.style.removeProperty('--color-border')
     }
-  window.addEventListener('siteTheme:apply', apply)
+    window.addEventListener('siteTheme:apply', apply)
     window.addEventListener('siteTheme:reset', onReset)
     window.addEventListener('storage', (e) => {
       if (e.key === 'siteTheme') apply()

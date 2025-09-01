@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useEffect, useState } from 'react'
 
@@ -21,7 +21,11 @@ export default function ThemeToast() {
         const raw = localStorage.getItem('siteTheme')
         if (raw) {
           const parsed = JSON.parse(raw) as { paletteName?: string }
-          push(`Theme applied${parsed.paletteName ? `: ${parsed.paletteName}` : ''}`)
+          push(
+            `Theme applied${
+              parsed.paletteName ? `: ${parsed.paletteName}` : ''
+            }`
+          )
           return
         }
       } catch {}
@@ -40,13 +44,13 @@ export default function ThemeToast() {
   if (toasts.length === 0) return null
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[100] flex flex-col items-center justify-end gap-2 p-4">
+    <div className='pointer-events-none fixed inset-0 z-[100] flex flex-col items-center justify-end gap-2 p-4'>
       {toasts.map((t) => (
         <div
           key={t.id}
-          className="pointer-events-auto mb-1 max-w-[90vw] rounded-xl border border-border bg-surface/90 px-4 py-2 text-sm text-light shadow-lg backdrop-blur-md"
-          role="status"
-          aria-live="polite"
+          className='pointer-events-auto mb-1 max-w-[90vw] rounded-xl border border-border bg-surface/90 px-4 py-2 text-sm text-light shadow-lg backdrop-blur-md'
+          role='status'
+          aria-live='polite'
         >
           {t.text}
         </div>

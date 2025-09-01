@@ -264,7 +264,9 @@ function ThemeExplorerInner() {
                 ))}
               </div>
             </div>
-            <div className='mb-2 text-[10px] uppercase tracking-widest text-light/60'>Conic + Radial overlays</div>
+            <div className='mb-2 text-[10px] uppercase tracking-widest text-light/60'>
+              Conic + Radial overlays
+            </div>
             <div className='flex items-center justify-between gap-3'>
               <PalettePicker value={sophKey} onChange={setSophKey} />
               <div className='shrink-0'>
@@ -357,7 +359,9 @@ function ThemeExplorerInner() {
                 ))}
               </div>
             </div>
-            <div className='mb-2 text-[10px] uppercase tracking-widest text-light/60'>Repeating Radial + Radial</div>
+            <div className='mb-2 text-[10px] uppercase tracking-widest text-light/60'>
+              Repeating Radial + Radial
+            </div>
             <div className='flex items-center justify-between gap-3'>
               <PalettePicker value={funKey} onChange={setFunKey} />
               <div className='shrink-0'>
@@ -455,7 +459,9 @@ function ThemeExplorerInner() {
                 ))}
               </div>
             </div>
-            <div className='mb-2 text-[10px] uppercase tracking-widest text-light/60'>Repeating Linear</div>
+            <div className='mb-2 text-[10px] uppercase tracking-widest text-light/60'>
+              Repeating Linear
+            </div>
             <div className='flex items-center justify-between gap-3'>
               <PalettePicker value={designKey} onChange={setDesignKey} />
               <div className='shrink-0'>
@@ -557,7 +563,9 @@ function ThemeExplorerInner() {
                 ))}
               </div>
             </div>
-            <div className='mb-2 text-[10px] uppercase tracking-widest text-light/60'>Linear + Repeating Grid</div>
+            <div className='mb-2 text-[10px] uppercase tracking-widest text-light/60'>
+              Linear + Repeating Grid
+            </div>
             <div className='flex items-center justify-between gap-3'>
               <PalettePicker value={corpKey} onChange={setCorpKey} />
               <div className='shrink-0'>
