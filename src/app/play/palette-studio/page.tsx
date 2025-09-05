@@ -1,9 +1,9 @@
 'use client'
 
 import { Suspense, useEffect, useRef, useState } from 'react'
+import type { RefObject, MutableRefObject } from 'react'
 import * as htmlToImage from 'html-to-image'
 import { useRouter, useSearchParams } from 'next/navigation'
-import Link from 'next/link'
 import BackButton from '@/components/BackButton'
 
 // Borrow types from palette page
@@ -373,12 +373,20 @@ function StudioClient() {
   const [dark, setDark] = useState(true)
   const [showColors, setShowColors] = useState(false)
   const [toast, setToast] = useState<string | undefined>(undefined)
+  // Motion controls (mobile-first)
+  const [animate, setAnimate] = useState(false)
+  const [speed, setSpeed] = useState(1) // 0.25–2 recommended
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   // Reveal state to animate swatches left-to-right on color changes
   const [revealed, setRevealed] = useState(false)
 
   const posterRefFull = useRef<HTMLDivElement>(null)
   const posterRefCard = useRef<HTMLDivElement>(null)
+  // Gradient layers for imperative style updates (avoid re-render every frame)
+  const bgFullRef = useRef<HTMLDivElement>(null)
+  const bgCardRef = useRef<HTMLDivElement>(null)
+  const prefersReducedMotion = useRef(false)
 
   useEffect(() => {
     const p = new URLSearchParams()
@@ -572,8 +580,20 @@ function StudioClient() {
     )
   }
 
+  // Drive background animation (imperative) on both desktop and mobile layers
+  useGradientAnimation({
+    gradient,
+    colors,
+    animate,
+    speed,
+    bgCardRef,
+    bgFullRef,
+    prefersReducedMotion,
+    baseGradient: posterGradient
+  })
+
   return (
-    <main className='relative min-h-screen'>
+    <main id='main' role='main' className='relative min-h-screen'>
       <BackButton href='/work' label='Back to Work' />
       {/* SR-only live region for announcements */}
       <div className='sr-only' role='status' aria-live='polite'>
@@ -583,6 +603,7 @@ function StudioClient() {
       <div className='hidden md:block absolute inset-0 z-0'>
         <div ref={posterRefFull} className='absolute inset-0'>
           <div
+            ref={bgFullRef}
             className='absolute inset-0 pointer-events-none'
             style={{ background: posterGradient }}
           />
@@ -672,6 +693,7 @@ function StudioClient() {
             <div
               className='p-6 min-h-[60vh] flex flex-col justify-between'
               style={{ background: posterGradient }}
+              ref={bgCardRef}
             >
               <div>
                 <div
@@ -680,6 +702,57 @@ function StudioClient() {
                   }`}
                 >
                   Palette
+                </div>
+                {/* Mobile compact controls: gradient + animate */}
+                <div className='mt-2 flex items-center gap-2'>
+                  <label className='flex items-center gap-1.5 text-xs'>
+                    <span
+                      className={`${dark ? 'text-light/80' : 'text-dark/80'}`}
+                    >
+                      Gradient
+                    </span>
+                    <select
+                      value={gradient}
+                      onChange={(e) =>
+                        setGradient(e.target.value as GradientKind)
+                      }
+                      className={`bg-black/20 ${
+                        dark ? 'text-white' : 'text-dark'
+                      } text-xs rounded-full px-2 py-1 outline-none`}
+                      aria-label='Gradient type'
+                    >
+                      <option value='linear'>Linear</option>
+                      <option value='radial'>Radial</option>
+                      <option value='conic'>Conic</option>
+                      <option value='repeating-linear'>Repeating Linear</option>
+                      <option value='repeating-radial'>Repeating Radial</option>
+                    </select>
+                  </label>
+                  <button
+                    type='button'
+                    onClick={() => setAnimate((a) => !a)}
+                    aria-pressed={animate}
+                    aria-label='Toggle animation'
+                    className={`ml-auto inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs transition ${
+                      dark
+                        ? 'border-white/30 text-white/90'
+                        : 'border-black/20 text-dark/90'
+                    }`}
+                  >
+                    <span>Animate</span>
+                    <span
+                      className={`h-4 w-7 rounded-full relative transition-colors ${
+                        animate ? 'bg-emerald-400/80' : 'bg-white/30'
+                      }`}
+                      aria-hidden
+                    >
+                      <span
+                        className={`absolute top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-white transition-transform ${
+                          animate ? 'translate-x-4' : 'translate-x-1'
+                        }`}
+                      />
+                    </span>
+                  </button>
                 </div>
                 <input
                   value={name}
@@ -768,6 +841,7 @@ function StudioClient() {
             <option value='repeating-radial'>Repeating Radial</option>
           </select>
         </label>
+        {/* Desktop: keep layout unchanged (no speed/animate here) */}
         <button
           onClick={exportPoster}
           aria-label='Export poster'
@@ -831,6 +905,26 @@ function StudioClient() {
                   />
                 </svg>
                 <span>{showColors ? 'Hide Colors' : 'Show Colors'}</span>
+              </button>
+              {/* Mobile only: open overflow sheet for Speed */}
+              <button
+                onClick={() => setSettingsOpen(true)}
+                className='inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-white/30 text-white/90 hover:bg-white/10 transition text-sm md:hidden'
+                aria-haspopup='dialog'
+                aria-controls='settings-sheet'
+              >
+                {/* Dots icon */}
+                <svg
+                  viewBox='0 0 24 24'
+                  fill='currentColor'
+                  className='h-5 w-5'
+                  aria-hidden
+                >
+                  <circle cx='5' cy='12' r='1.6' />
+                  <circle cx='12' cy='12' r='1.6' />
+                  <circle cx='19' cy='12' r='1.6' />
+                </svg>
+                <span>More</span>
               </button>
               <button
                 onClick={randomizeSeed}
@@ -910,6 +1004,71 @@ function StudioClient() {
         </div>
       )}
 
+      {/* Settings Sheet (mobile) */}
+      {settingsOpen && (
+        <div
+          id='settings-sheet'
+          role='dialog'
+          aria-modal='true'
+          className='fixed inset-0 z-[60] md:hidden'
+        >
+          <button
+            aria-label='Close settings'
+            className='absolute inset-0 bg-black/40'
+            onClick={() => setSettingsOpen(false)}
+          />
+          <div className='absolute left-0 right-0 bottom-0 rounded-t-2xl bg-zinc-900 text-white border-t border-white/20 p-4 shadow-2xl'>
+            <div className='mx-auto max-w-md'>
+              <div className='flex items-center justify-between'>
+                <h2 className='text-sm font-medium text-white/80'>Playback</h2>
+                <button
+                  onClick={() => setSettingsOpen(false)}
+                  className='h-9 w-9 rounded-full border border-white/30 flex items-center justify-center'
+                  aria-label='Close'
+                >
+                  <svg
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    stroke='currentColor'
+                    strokeWidth='1.5'
+                    className='h-5 w-5'
+                    aria-hidden
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M6 18 18 6M6 6l12 12'
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className='mt-4'>
+                <label className='flex items-center justify-between text-sm'>
+                  <span className='text-white/80'>Speed</span>
+                  <span className='tabular-nums text-white/60'>
+                    x{speed.toFixed(2)}
+                  </span>
+                </label>
+                <input
+                  type='range'
+                  min={0.25}
+                  max={2}
+                  step={0.25}
+                  value={speed}
+                  onChange={(e) => setSpeed(parseFloat(e.target.value))}
+                  className='w-full accent-emerald-400'
+                  aria-label='Animation speed'
+                />
+                <p className='mt-2 text-xs text-white/60'>
+                  Repeating Linear scrolls left-to-right. Other gradients subtly
+                  drift or rotate.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Toast */}
       {toast && (
         <div className='fixed top-4 left-1/2 -translate-x-1/2 z-50'>
@@ -934,4 +1093,125 @@ export default function PaletteStudioPage() {
       <StudioClient />
     </Suspense>
   )
+}
+
+// Animation engine: keep modest CPU by imperative style updates.
+// Applies to mobile card and desktop layer when present.
+function useGradientAnimation(params: {
+  gradient: GradientKind
+  colors: string[]
+  animate: boolean
+  speed: number
+  bgCardRef: RefObject<HTMLDivElement>
+  bgFullRef: RefObject<HTMLDivElement>
+  prefersReducedMotion: MutableRefObject<boolean>
+  baseGradient: string
+}) {
+  const {
+    gradient,
+    colors,
+    animate,
+    speed,
+    bgCardRef,
+    bgFullRef,
+    prefersReducedMotion,
+    baseGradient
+  } = params
+  const rafRef = useRef<number | null>(null)
+
+  // Reset to static when inputs change
+  useEffect(() => {
+    const nodes = [bgCardRef.current, bgFullRef.current].filter(
+      Boolean
+    ) as HTMLDivElement[]
+    nodes.forEach((n) => {
+      n.style.background = baseGradient
+      n.style.backgroundPosition = ''
+    })
+  }, [baseGradient, bgCardRef, bgFullRef])
+
+  useEffect(() => {
+    const m = window.matchMedia('(prefers-reduced-motion: reduce)')
+    prefersReducedMotion.current = m.matches
+    const onChange = (e: MediaQueryListEvent) =>
+      (prefersReducedMotion.current = e.matches)
+    m.addEventListener('change', onChange)
+    return () => m.removeEventListener('change', onChange)
+  }, [prefersReducedMotion])
+
+  // Build animated frame
+  useEffect(() => {
+    if (!animate || prefersReducedMotion.current) {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      const nodes = [bgCardRef.current, bgFullRef.current].filter(
+        Boolean
+      ) as HTMLDivElement[]
+      nodes.forEach((n) => {
+        n.style.background = baseGradient
+        n.style.backgroundPosition = ''
+      })
+      return
+    }
+    let start = performance.now()
+    const c0 = colors[0] ?? '#000000'
+    const c1 = colors[1] ?? c0
+    const c2 = colors[2] ?? c1
+    // Capture current nodes once for this effect lifetime
+    const n1 = bgCardRef.current
+    const n2 = bgFullRef.current
+    const nodes = [n1, n2].filter(Boolean) as HTMLDivElement[]
+    const loop = (t: number) => {
+      const dt = (t - start) * 0.001 * Math.max(0.1, Math.min(3, speed || 1))
+      if (gradient === 'repeating-linear') {
+        const background = `repeating-linear-gradient(45deg, ${c0} 0, ${c0} 24px, ${c1} 24px, ${c1} 48px, ${c2} 48px, ${c2} 72px)`
+        const backgroundPosition = `${(dt * 64) % 64}px 0px`
+        nodes.forEach((n) => {
+          n.style.background = background
+          n.style.backgroundPosition = backgroundPosition
+        })
+      } else if (gradient === 'linear') {
+        const angle = 135 + Math.sin(dt * 1.2) * 12
+        const background = `linear-gradient(${angle}deg, ${c0} 0%, ${c1} 50%, ${c2} 100%)`
+        nodes.forEach((n) => (n.style.background = background))
+      } else if (gradient === 'conic') {
+        const from = (dt * 40) % 360
+        const background = `conic-gradient(from ${from}deg at 50% 50%, ${c0} 0deg, ${c1} 140deg, ${c2} 260deg, ${c0} 360deg)`
+        nodes.forEach((n) => (n.style.background = background))
+      } else if (gradient === 'radial') {
+        const cx = 50 + Math.sin(dt * 0.8) * 6
+        const cy = 50 + Math.cos(dt * 0.6) * 6
+        const rx = 900 + Math.sin(dt * 0.9) * 60
+        const ry = 700 + Math.cos(dt * 0.7) * 60
+        const background = `radial-gradient(${rx}px ${ry}px at ${cx}% ${cy}%, ${c0} 0%, ${c1} 55%, ${c2} 100%)`
+        nodes.forEach((n) => (n.style.background = background))
+      } else if (gradient === 'repeating-radial') {
+        const cx = 50 + Math.sin(dt * 0.9) * 4
+        const cy = 50 + Math.cos(dt * 0.7) * 4
+        const background = `repeating-radial-gradient(circle at ${cx}% ${cy}%, ${c0} 0, ${c0} 14px, ${c1} 14px, ${c1} 28px, ${c2} 28px, ${c2} 42px)`
+        nodes.forEach((n) => (n.style.background = background))
+      }
+      rafRef.current = requestAnimationFrame(loop)
+    }
+    rafRef.current = requestAnimationFrame(loop)
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      if (n1) {
+        n1.style.background = baseGradient
+        n1.style.backgroundPosition = ''
+      }
+      if (n2) {
+        n2.style.background = baseGradient
+        n2.style.backgroundPosition = ''
+      }
+    }
+  }, [
+    animate,
+    speed,
+    gradient,
+    colors,
+    baseGradient,
+    bgCardRef,
+    bgFullRef,
+    prefersReducedMotion
+  ])
 }

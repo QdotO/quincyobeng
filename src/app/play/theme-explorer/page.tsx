@@ -51,27 +51,27 @@ function PalettePicker({
   onChange: (k: string) => void
 }) {
   return (
-    <div className='grid grid-cols-4 gap-2'>
+    <div className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
       {PALETTES.map((p) => (
         <button
           key={p.key}
           onClick={() => onChange(p.key)}
-          className={`rounded-xl p-2 border transition ${
+          className={`rounded-xl p-3 border transition ${
             value === p.key ? 'border-electric' : 'border-border'
           }`}
           aria-label={p.name}
           title={p.name}
         >
-          <div className='grid grid-cols-5 gap-1'>
+          <div className='grid grid-cols-5 gap-1.5'>
             {p.colors.map((c) => (
               <div
                 key={c}
-                className='h-4 rounded'
+                className='h-5 rounded'
                 style={{ backgroundColor: c }}
               />
             ))}
           </div>
-          <div className='mt-1 text-[10px] text-light/70 text-left'>
+          <div className='mt-1.5 text-[11px] text-light/70 text-left'>
             {p.name}
           </div>
         </button>
@@ -220,7 +220,7 @@ function ThemeExplorerInner() {
   }
 
   return (
-    <main className='px-4 py-8 md:py-10'>
+  <main id='main' role='main' className='px-4 py-8 md:py-10'>
       <BackButton href='/work' label='Back to Work' />
       <div className='max-w-6xl mx-auto'>
         <header className='mb-8 md:mb-10 text-center'>

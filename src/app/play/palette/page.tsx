@@ -1,7 +1,7 @@
 'use client'
 
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
-import Link from 'next/link'
+// import Link from 'next/link'
 import BackButton from '@/components/BackButton'
 import * as htmlToImage from 'html-to-image'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -141,11 +141,14 @@ function generateScheme(
   count = 5,
   existing?: string[],
   locks?: boolean[],
-  variant = 0
+  variant = 0,
+  varianceMultiplier = 1
 ): string[] {
   const seed = hexToHsl(seedHex)
   const rand = mulberry32(hashStringToInt(`${seedHex}|${scheme}|${variant}`))
-  const j = (n: number) => (rand() * 2 - 1) * n
+  // Slightly widen jitter for more variety per regeneration
+  const varianceFactor = 1.25 * varianceMultiplier
+  const j = (n: number) => (rand() * 2 - 1) * n * varianceFactor
   const between = (min: number, max: number) => min + rand() * (max - min)
   const result = new Array<string>(count)
   const centerBase = Math.floor(count / 2)
@@ -284,7 +287,7 @@ function PaletteClient() {
     parseInt(search.get('v') || '0', 10) || 0
   )
   const [colors, setColors] = useState<string[]>(() =>
-    generateScheme(seed, scheme, 5, undefined, undefined, variant)
+    generateScheme(seed, scheme, 5, undefined, undefined, variant, parseFloat(search.get('sp') || '1') || 1)
   )
   const [locks, setLocks] = useState<boolean[]>([
     false,
@@ -305,6 +308,9 @@ function PaletteClient() {
   const [scene, setScene] = useState<'Palette' | 'Poster'>('Palette')
   const [toast, setToast] = useState<string | undefined>(undefined)
   const [lastCopiedIndex, setLastCopiedIndex] = useState<number | null>(null)
+  const [spice, setSpice] = useState<number>(
+    () => parseFloat(search.get('sp') || '1') || 1
+  )
 
   useEffect(() => {
     const params = new URLSearchParams()
@@ -312,8 +318,9 @@ function PaletteClient() {
     params.set('scheme', scheme)
     if (name) params.set('name', encodeURIComponent(name))
     if (variant) params.set('v', String(variant))
-    router.replace(`?${params.toString()}`)
-  }, [seed, scheme, name, variant, router])
+    if (spice !== 1) params.set('sp', String(spice))
+    router.replace(`?${params.toString()}`, { scroll: false })
+  }, [seed, scheme, name, variant, spice, router])
 
   const regenerate = () => {
     setVariant((v) => {
@@ -325,7 +332,8 @@ function PaletteClient() {
           prev.length,
           prev,
           locks,
-          nextVariant
+          nextVariant,
+          spice
         )
         setName(nameFromHexes(next))
         return next
@@ -342,7 +350,7 @@ function PaletteClient() {
     setSeed(rand)
     setVariant(0)
     setColors((prev) =>
-      generateScheme(rand, scheme, prev.length, prev, locks, 0)
+      generateScheme(rand, scheme, prev.length, prev, locks, 0, spice)
     )
   }
 
@@ -438,7 +446,7 @@ function PaletteClient() {
   } 0%, ${dark ? '#0f1117' : '#eef2f7'} 100%)`
 
   return (
-    <main className='relative min-h-screen'>
+  <main id='main' role='main' className='relative min-h-screen'>
       <BackButton href='/work' label='Back to Work' />
       {/* SR-only live region for announcements */}
       <div className='sr-only' role='status' aria-live='polite'>
@@ -461,10 +469,10 @@ function PaletteClient() {
         }}
       />
 
-      <div className='px-6 py-10'>
+  <div className='px-6 py-10 pb-28 md:pb-10'>
         <div className='max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8'>
           {/* Controls */}
-          <aside className='lg:col-span-1 bg-surface border border-border rounded-2xl p-6 h-fit sticky top-6'>
+          <aside className='order-2 lg:order-1 lg:col-span-1 bg-surface border border-border rounded-2xl p-4 sm:p-6 h-fit lg:sticky lg:top-6'>
             <h1 className='text-light font-display text-xl font-bold mb-1'>
               Color Palette Generator
             </h1>
@@ -477,25 +485,21 @@ function PaletteClient() {
                 <label className='block text-sm text-muted mb-2'>
                   Base color
                 </label>
-                <div className='flex items-center gap-3'>
+                <div className='grid grid-cols-[48px_1fr] gap-3'>
                   <input
                     type='color'
                     value={seed}
                     onChange={(e) => setSeed(e.target.value.toUpperCase())}
-                    className='h-10 w-16 rounded border border-border bg-transparent'
+                    className='h-12 w-12 rounded border border-border bg-transparent'
                   />
                   <input
                     value={seed}
                     onChange={(e) => setSeed(e.target.value.toUpperCase())}
-                    className='flex-1 rounded-lg bg-dark-secondary border border-border text-light p-2'
+                    className='rounded-lg bg-dark-secondary border border-border text-light px-3 py-3 text-base'
+                    placeholder='#00D4FF'
                   />
-                  <button
-                    onClick={randomizeSeed}
-                    className='px-3 py-2 rounded-lg border border-electric text-electric hover:bg-electric hover:text-dark transition'
-                  >
-                    Random
-                  </button>
                 </div>
+                <div className='mt-2 text-xs text-muted'>Tip: paste a hex or pick a color.</div>
               </div>
 
               <div>
@@ -531,12 +535,12 @@ function PaletteClient() {
 
               <div>
                 <label className='block text-sm text-muted mb-2'>Scene</label>
-                <div className='inline-flex gap-2'>
+                <div className='grid grid-cols-2 gap-2'>
                   {(['Palette', 'Poster'] as const).map((s) => (
                     <button
                       key={s}
                       onClick={() => setScene(s)}
-                      className={`px-3 py-1 rounded-full border ${
+                      className={`px-4 py-2 rounded-lg border text-sm ${
                         scene === s
                           ? 'border-electric text-electric'
                           : 'border-border text-light/80'
@@ -548,7 +552,27 @@ function PaletteClient() {
                 </div>
               </div>
 
-              <div className='pt-2 grid grid-cols-2 gap-2'>
+              <div>
+                <label className='block text-sm text-muted mb-2'>Spice (variance)</label>
+                <div className='flex items-center gap-3'>
+                  <input
+                    type='range'
+                    min={0.8}
+                    max={1.75}
+                    step={0.05}
+                    value={spice}
+                    onChange={(e) => setSpice(parseFloat(e.target.value))}
+                    aria-label='Palette variance'
+                    className='flex-1 accent-electric'
+                  />
+                  <span className='text-xs text-muted tabular-nums w-12 text-right'>
+                    x{spice.toFixed(2)}
+                  </span>
+                </div>
+                <p className='mt-1 text-xs text-muted'>Higher spice increases variety between regenerations.</p>
+              </div>
+
+              <div className='hidden md:grid pt-2 grid-cols-2 gap-2'>
                 <button
                   onClick={copyJSON}
                   className='px-4 py-2 rounded-lg border border-electric text-electric hover:bg-electric hover:text-dark transition'
@@ -561,17 +585,37 @@ function PaletteClient() {
                 >
                   Export PNG
                 </button>
+                {/* Hidden hook for mobile Random action */}
+                <button
+                  type='button'
+                  onClick={randomizeSeed}
+                  data-randomize
+                  className='hidden'
+                  aria-hidden
+                  tabIndex={-1}
+                />
               </div>
             </div>
           </aside>
 
           {/* Preview */}
-          <section className='lg:col-span-2'>
+          <section className='order-1 lg:order-2 lg:col-span-2'>
             <div
-              className={`rounded-2xl border border-border/60 backdrop-blur-sm overflow-hidden ${
-                dark ? 'bg-black/20' : 'bg-white/60'
+              className={`relative overflow-hidden md:rounded-2xl md:border md:border-border/60 md:backdrop-blur-sm ${
+                dark ? 'md:bg-black/20' : 'md:bg-white/60'
               }`}
             >
+              {/* Regenerate in top-right of preview card */}
+              <div className='absolute top-3 right-3 z-10'>
+                <button
+                  onClick={regenerate}
+                  className='px-4 py-2 rounded-full bg-gradient-to-r from-electric to-electric-secondary text-dark font-semibold shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80'
+                  aria-label='Regenerate palette'
+                  title='Regenerate palette'
+                >
+                  Regenerate
+                </button>
+              </div>
               <div className='px-8 pt-8'>
                 <div className='text-sm text-muted mb-2'>Palette</div>
                 <div className='flex flex-col md:flex-row md:items-center gap-2'>
@@ -592,7 +636,7 @@ function PaletteClient() {
               {scene === 'Palette' && (
                 <div
                   ref={gridRef}
-                  className='grid grid-cols-2 md:grid-cols-5 gap-4 p-8'
+                  className='grid grid-cols-2 md:grid-cols-5 gap-4 p-6 sm:p-8'
                 >
                   {colors.map((hex, idx) => {
                     const badge = contrastBadge(hex)
@@ -607,7 +651,7 @@ function PaletteClient() {
                         }`}
                         style={{ transitionDelay: `${idx * 40}ms` }}
                       >
-                        <div className='relative h-28'>
+                        <div className='relative h-32 md:h-28'>
                           <button
                             type='button'
                             onClick={() => copyHex(hex, idx)}
@@ -665,7 +709,7 @@ function PaletteClient() {
                               locks[idx] ? 'Unlock color' : 'Lock color'
                             }
                             title={locks[idx] ? 'Unlock' : 'Lock'}
-                            className={`absolute top-2 right-2 z-20 h-7 w-7 rounded-full flex items-center justify-center transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 ${
+                            className={`absolute top-2 right-2 z-20 h-10 w-10 rounded-full flex items-center justify-center transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 ${
                               locks[idx]
                                 ? 'bg-electric text-dark shadow'
                                 : 'bg-black/45 text-white hover:bg-black/55'
@@ -674,7 +718,7 @@ function PaletteClient() {
                             {/* lock icon */}
                             <svg
                               viewBox='0 0 24 24'
-                              className='h-4 w-4'
+                              className='h-5 w-5'
                               fill='none'
                               stroke='currentColor'
                               strokeWidth='1.8'
@@ -821,19 +865,48 @@ function PaletteClient() {
                 </div>
               )}
 
-              <div className='px-8 pb-8'>
-                <button
-                  onClick={regenerate}
-                  className='px-5 py-2.5 rounded-full bg-gradient-to-r from-electric to-electric-secondary text-dark font-semibold'
-                >
-                  Regenerate
-                </button>
-              </div>
+              {/* Regenerate moved to the top-right of the card */}
             </div>
           </section>
         </div>
+        {/* Mobile sticky actions */}
+        <MobileActions onCopy={copyJSON} onExport={exportPNG} />
       </div>
     </main>
+  )
+}
+
+// Mobile sticky actions
+// Place at bottom for quick export/copy on small screens
+function MobileActions({ onCopy, onExport }: { onCopy: () => void; onExport: () => void }) {
+  return (
+    <div className='md:hidden fixed left-0 right-0 bottom-0 z-40 pb-[env(safe-area-inset-bottom)]'>
+      <div className='mx-auto max-w-6xl px-4 pb-4'>
+        <div className='backdrop-blur-md bg-black/40 border border-white/20 text-white rounded-2xl shadow-2xl p-3 grid grid-cols-3 gap-2'>
+          <button
+            onClick={() => {
+              const btn = document.querySelector('[data-randomize]') as HTMLButtonElement | null
+              btn?.click()
+            }}
+            className='px-3 py-2 rounded-lg border border-white/30 text-white/90 hover:bg-white/10 transition text-sm'
+          >
+            Random
+          </button>
+          <button
+            onClick={onCopy}
+            className='px-3 py-2 rounded-lg border border-white/30 text-white/90 hover:bg-white/10 transition text-sm'
+          >
+            Copy JSON
+          </button>
+          <button
+            onClick={onExport}
+            className='px-3 py-2 rounded-lg bg-gradient-to-r from-electric to-electric-secondary text-dark font-semibold text-sm'
+          >
+            Export PNG
+          </button>
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -31,7 +31,7 @@ const ChoiceStep = ({
           <button
             key={option.id}
             onClick={() => onChoice(index)}
-            className='w-full text-left bg-white rounded-lg shadow-sm border p-5 hover:shadow-md hover:border-blue-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 group'
+            className='w-full text-left bg-white rounded-lg shadow-sm border px-5 py-4 min-h-[44px] hover:shadow-md hover:border-blue-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 group'
             aria-describedby={`option-${index}-rationale`}
             aria-label={`Option ${index + 1}: ${option.text}`}
           >
@@ -52,7 +52,7 @@ const ChoiceStep = ({
               </div>
               <div className='ml-4 text-slate-400 group-hover:text-blue-500 transition-colors'>
                 <svg
-                  className='w-5 h-5'
+                  className='w-6 h-6'
                   fill='none'
                   stroke='currentColor'
                   viewBox='0 0 24 24'

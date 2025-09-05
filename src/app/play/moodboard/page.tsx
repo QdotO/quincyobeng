@@ -122,7 +122,7 @@ export default function MoodboardPage() {
   }
 
   return (
-    <main className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface px-6 py-10 pb-28 lg:pb-10'>
+    <main id='main' role='main' className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface px-6 py-10 pb-28 lg:pb-10'>
       <BackButton href='/work' label='Back to Work' />
       {/* Mobile view switcher */}
       <div className='lg:hidden flex justify-center mb-6'>

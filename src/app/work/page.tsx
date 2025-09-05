@@ -3,7 +3,7 @@ import BackButton from '@/components/BackButton'
 
 export default function Work() {
   return (
-    <main className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface'>
+  <main id='main' role='main' className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface'>
       <BackButton href='/' label='Back to Home' />
       {/* Hero Section */}
       <section className='relative min-h-screen flex flex-col justify-center items-center px-8 overflow-hidden'>
@@ -67,6 +67,11 @@ export default function Work() {
                   Artistic, Design Focused, Corporate), each with its own
                   palette control.
                 </p>
+                <ul className='text-muted text-xs mb-6 list-disc pl-5 space-y-1 text-left'>
+                  <li>Live theme application across the site</li>
+                  <li>URL-synced controls and font pairing</li>
+                  <li>Texture and gradient systems</li>
+                </ul>
 
                 <div className='flex flex-wrap gap-2 mb-6'>
                   <span className='px-3 py-1 bg-electric/10 text-electric text-xs rounded-full border border-electric/20'>
@@ -115,6 +120,11 @@ export default function Work() {
                   Generate beautiful color schemes from a base color. Lock,
                   copy, and export your palette.
                 </p>
+                <ul className='text-muted text-xs mb-6 list-disc pl-5 space-y-1 text-left'>
+                  <li>Deterministic scheme generation</li>
+                  <li>Lock/copy microinteractions with a11y toasts</li>
+                  <li>Poster export via html-to-image</li>
+                </ul>
 
                 <div className='flex flex-wrap gap-2 mb-6'>
                   <span className='px-3 py-1 bg-electric/10 text-electric text-xs rounded-full border border-electric/20'>
@@ -163,6 +173,11 @@ export default function Work() {
                   A poster-first, immersive way to explore palettes. Optimized
                   for desktop and mobile with exportable posters.
                 </p>
+                <ul className='text-muted text-xs mb-6 list-disc pl-5 space-y-1 text-left'>
+                  <li>Animated gradients per type + reduced-motion</li>
+                  <li>WebGL water-like linear shader with fallback</li>
+                  <li>URL-state sync and export workflow</li>
+                </ul>
 
                 <div className='flex flex-wrap gap-2 mb-6'>
                   <span className='px-3 py-1 bg-electric/10 text-electric text-xs rounded-full border border-electric/20'>
@@ -211,6 +226,11 @@ export default function Work() {
                   Pick adjectives, palettes, and type pairings to generate a
                   quick brand moodboard with exportable tokens.
                 </p>
+                <ul className='text-muted text-xs mb-6 list-disc pl-5 space-y-1 text-left'>
+                  <li>Composable tokens for brand exploration</li>
+                  <li>Deterministic naming and palettes</li>
+                  <li>Exportable artifacts</li>
+                </ul>
 
                 <div className='flex flex-wrap gap-2 mb-6'>
                   <span className='px-3 py-1 bg-electric/10 text-electric text-xs rounded-full border border-electric/20'>
@@ -259,6 +279,11 @@ export default function Work() {
                   Pick a vibe, palette, and CTA — watch a polished hero come to
                   life instantly. Export a snippet and share your idea.
                 </p>
+                <ul className='text-muted text-xs mb-6 list-disc pl-5 space-y-1 text-left'>
+                  <li>Config-driven hero composition</li>
+                  <li>URL-state for reproducible results</li>
+                  <li>Export/share affordances</li>
+                </ul>
 
                 <div className='flex flex-wrap gap-2 mb-6'>
                   <span className='px-3 py-1 bg-electric/10 text-electric text-xs rounded-full border border-electric/20'>
@@ -308,6 +333,11 @@ export default function Work() {
                   pressure. Experience real strategic choices that affect user
                   satisfaction, business value, technical health, and timeline.
                 </p>
+                <ul className='text-muted text-xs mb-6 list-disc pl-5 space-y-1 text-left'>
+                  <li>Stateful flow with URL-resumable choices</li>
+                  <li>Progressive disclosure and feedback</li>
+                  <li>Summary and reset mechanics</li>
+                </ul>
 
                 <div className='flex flex-wrap gap-2 mb-6'>
                   <span className='px-3 py-1 bg-electric/10 text-electric text-xs rounded-full border border-electric/20'>

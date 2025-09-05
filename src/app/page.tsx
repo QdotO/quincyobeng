@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function Home() {
   return (
-    <main className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface'>
+  <main id='main' role='main' className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface'>
       {/* Hero Section */}
       <section className='relative min-h-screen flex flex-col justify-center items-center px-8 overflow-hidden'>
         {/* Background gradient overlay */}
@@ -25,7 +25,7 @@ export default function Home() {
             problems into elegant solutions.
           </p>
 
-          <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
+          <div className='flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center'>
             <Link
               href='/work'
               className='group relative px-8 py-4 bg-gradient-to-r from-electric to-electric-secondary text-dark font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-electric/25'
