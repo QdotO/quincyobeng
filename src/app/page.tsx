@@ -32,7 +32,7 @@ export default function Home() {
           <div className='flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center'>
             <Link
               href='/work'
-              className='group relative px-8 py-4 bg-gradient-to-r from-electric to-electric-secondary text-dark font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-electric/25'
+              className='group relative px-8 py-4 bg-gradient-to-r from-electric to-electric-secondary text-dark font-semibold rounded-full transition-all duration-200 hover:scale-[1.02] hover:shadow-lg hover:shadow-electric/15'
             >
               <span className='relative z-10'>View Samples</span>
             </Link>

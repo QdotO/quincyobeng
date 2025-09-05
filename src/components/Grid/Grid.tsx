@@ -23,8 +23,8 @@ const Grid = (props: Props) => {
           {/* Left column - Photo and Tech Stack */}
           <div className='lg:col-span-1 space-y-8'>
             <div className='group'>
-              <div className='absolute inset-0 bg-gradient-to-r from-electric to-electric-secondary rounded-2xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-300'></div>
-              <div className='relative bg-surface border border-border rounded-2xl p-6 hover:border-electric/50 transition-all duration-300'>
+              <div className='absolute inset-0 bg-gradient-to-r from-electric to-electric-secondary rounded-2xl blur-xl opacity-20 group-hover:opacity-35 transition-opacity duration-200'></div>
+              <div className='relative bg-surface border border-border rounded-2xl p-6 hover:border-electric/30 transition-all duration-200'>
                 <Image
                   className='rounded-xl w-full h-auto'
                   src={photoSrc}
@@ -56,7 +56,7 @@ const Grid = (props: Props) => {
 
             {/* Bottom row - Education and Experience */}
             <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-              <div className='bg-surface border border-border rounded-2xl p-8 hover:border-electric/50 transition-all duration-300'>
+              <div className='bg-surface border border-border rounded-2xl p-8 hover:border-electric/30 transition-all duration-200'>
                 <h3 className='text-light font-display font-bold text-2xl mb-4 flex items-center gap-3'>
                   🎓 Education
                 </h3>

@@ -17,7 +17,7 @@ const LightBio: React.FC<LightBioProps> = ({
   pronouns
 }) => {
   return (
-    <div className='bg-surface border border-border rounded-2xl p-8 hover:border-electric/50 transition-all duration-300'>
+    <div className='bg-surface border border-border rounded-2xl p-8 hover:border-electric/30 transition-all duration-200'>
       <div className='flex items-start gap-6'>
         <div className='w-20 h-20 bg-gradient-to-r from-electric to-electric-secondary rounded-2xl p-4 flex-shrink-0'>
           <Image

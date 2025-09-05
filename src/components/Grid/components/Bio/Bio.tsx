@@ -2,7 +2,7 @@ import React from 'react'
 
 const Bio = () => {
   return (
-    <div className='bg-surface border border-border rounded-2xl p-8 hover:border-electric/50 transition-all duration-300'>
+    <div className='bg-surface border border-border rounded-2xl p-8 hover:border-electric/30 transition-all duration-200'>
       <h3 className='text-light font-display font-bold text-2xl mb-6'>
         Hey! 👋🏽
       </h3>

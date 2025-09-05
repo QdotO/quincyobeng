@@ -18,7 +18,7 @@ const PastExperienceSection: React.FC = () => {
   ]
 
   return (
-    <div className='bg-surface border border-border rounded-2xl p-6 hover:border-electric/50 transition-all duration-300'>
+    <div className='bg-surface border border-border rounded-2xl p-6 hover:border-electric/30 transition-all duration-200'>
       <div className='flex items-center gap-2 mb-4'>
         <span className='text-xl'>💼</span>
         <h2 className='text-light font-display font-bold text-xl'>
@@ -30,7 +30,7 @@ const PastExperienceSection: React.FC = () => {
         {experiences.map((exp, index) => (
           <div
             key={index}
-            className={`group p-3 rounded-lg transition-all duration-300 ${
+            className={`group p-3 rounded-lg transition-all duration-200 ${
               exp.highlight
                 ? 'bg-gradient-to-r from-electric/10 to-electric-secondary/10 border border-electric/30'
                 : 'bg-dark-secondary/30 hover:bg-dark-secondary/50'
