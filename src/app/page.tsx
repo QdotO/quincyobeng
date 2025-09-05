@@ -3,7 +3,11 @@ import Link from 'next/link'
 
 export default function Home() {
   return (
-  <main id='main' role='main' className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface'>
+    <main
+      id='main'
+      role='main'
+      className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface'
+    >
       {/* Hero Section */}
       <section className='relative min-h-screen flex flex-col justify-center items-center px-8 overflow-hidden'>
         {/* Background gradient overlay */}

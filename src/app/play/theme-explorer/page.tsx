@@ -220,7 +220,7 @@ function ThemeExplorerInner() {
   }
 
   return (
-  <main id='main' role='main' className='px-4 py-8 md:py-10'>
+    <main id='main' role='main' className='px-4 py-8 md:py-10'>
       <BackButton href='/work' label='Back to Work' />
       <div className='max-w-6xl mx-auto'>
         <header className='mb-8 md:mb-10 text-center'>

@@ -190,7 +190,11 @@ export default function BrandMoodboardPage() {
   }
 
   return (
-    <main id='main' role='main' className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface px-6 py-10'>
+    <main
+      id='main'
+      role='main'
+      className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface px-6 py-10'
+    >
       <BackButton href='/work' label='Back to Work' />
       <div className='max-w-6xl mx-auto pb-28 lg:pb-0'>
         {/* Header */}

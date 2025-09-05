@@ -3,7 +3,11 @@ import BackButton from '@/components/BackButton'
 
 export default function Work() {
   return (
-  <main id='main' role='main' className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface'>
+    <main
+      id='main'
+      role='main'
+      className='min-h-screen bg-gradient-to-br from-dark via-dark-secondary to-surface'
+    >
       <BackButton href='/' label='Back to Home' />
       {/* Hero Section */}
       <section className='relative min-h-screen flex flex-col justify-center items-center px-8 overflow-hidden'>

@@ -287,7 +287,15 @@ function PaletteClient() {
     parseInt(search.get('v') || '0', 10) || 0
   )
   const [colors, setColors] = useState<string[]>(() =>
-    generateScheme(seed, scheme, 5, undefined, undefined, variant, parseFloat(search.get('sp') || '1') || 1)
+    generateScheme(
+      seed,
+      scheme,
+      5,
+      undefined,
+      undefined,
+      variant,
+      parseFloat(search.get('sp') || '1') || 1
+    )
   )
   const [locks, setLocks] = useState<boolean[]>([
     false,
@@ -446,7 +454,7 @@ function PaletteClient() {
   } 0%, ${dark ? '#0f1117' : '#eef2f7'} 100%)`
 
   return (
-  <main id='main' role='main' className='relative min-h-screen'>
+    <main id='main' role='main' className='relative min-h-screen'>
       <BackButton href='/work' label='Back to Work' />
       {/* SR-only live region for announcements */}
       <div className='sr-only' role='status' aria-live='polite'>
@@ -469,7 +477,7 @@ function PaletteClient() {
         }}
       />
 
-  <div className='px-6 py-10 pb-28 md:pb-10'>
+      <div className='px-6 py-10 pb-28 md:pb-10'>
         <div className='max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8'>
           {/* Controls */}
           <aside className='order-2 lg:order-1 lg:col-span-1 bg-surface border border-border rounded-2xl p-4 sm:p-6 h-fit lg:sticky lg:top-6'>
@@ -499,7 +507,9 @@ function PaletteClient() {
                     placeholder='#00D4FF'
                   />
                 </div>
-                <div className='mt-2 text-xs text-muted'>Tip: paste a hex or pick a color.</div>
+                <div className='mt-2 text-xs text-muted'>
+                  Tip: paste a hex or pick a color.
+                </div>
               </div>
 
               <div>
@@ -553,7 +563,9 @@ function PaletteClient() {
               </div>
 
               <div>
-                <label className='block text-sm text-muted mb-2'>Spice (variance)</label>
+                <label className='block text-sm text-muted mb-2'>
+                  Spice (variance)
+                </label>
                 <div className='flex items-center gap-3'>
                   <input
                     type='range'
@@ -569,7 +581,9 @@ function PaletteClient() {
                     x{spice.toFixed(2)}
                   </span>
                 </div>
-                <p className='mt-1 text-xs text-muted'>Higher spice increases variety between regenerations.</p>
+                <p className='mt-1 text-xs text-muted'>
+                  Higher spice increases variety between regenerations.
+                </p>
               </div>
 
               <div className='hidden md:grid pt-2 grid-cols-2 gap-2'>
@@ -878,14 +892,22 @@ function PaletteClient() {
 
 // Mobile sticky actions
 // Place at bottom for quick export/copy on small screens
-function MobileActions({ onCopy, onExport }: { onCopy: () => void; onExport: () => void }) {
+function MobileActions({
+  onCopy,
+  onExport
+}: {
+  onCopy: () => void
+  onExport: () => void
+}) {
   return (
     <div className='md:hidden fixed left-0 right-0 bottom-0 z-40 pb-[env(safe-area-inset-bottom)]'>
       <div className='mx-auto max-w-6xl px-4 pb-4'>
         <div className='backdrop-blur-md bg-black/40 border border-white/20 text-white rounded-2xl shadow-2xl p-3 grid grid-cols-3 gap-2'>
           <button
             onClick={() => {
-              const btn = document.querySelector('[data-randomize]') as HTMLButtonElement | null
+              const btn = document.querySelector(
+                '[data-randomize]'
+              ) as HTMLButtonElement | null
               btn?.click()
             }}
             className='px-3 py-2 rounded-lg border border-white/30 text-white/90 hover:bg-white/10 transition text-sm'

@@ -42,7 +42,12 @@ export const metadata: Metadata = {
     description:
       'Senior Software Engineer with 10+ years building immersive, accessible experiences.',
     images: [
-      { url: '/assets/quincy.jpeg', width: 1200, height: 630, alt: 'Quincy Obeng' }
+      {
+        url: '/assets/quincy.jpeg',
+        width: 1200,
+        height: 630,
+        alt: 'Quincy Obeng'
+      }
     ]
   },
   twitter: {
@@ -65,7 +70,9 @@ export default function RootLayout({
       className={`${inter.variable} ${playfair.variable} ${spaceGrotesk.variable} ${ibmPlexSans.variable}`}
     >
       <body className='font-theme-sans antialiased'>
-        <a href="#main" className="skip-link">Skip to content</a>
+        <a href='#main' className='skip-link'>
+          Skip to content
+        </a>
         <ThemeRuntime />
         <ThemeToast />
         {children}
